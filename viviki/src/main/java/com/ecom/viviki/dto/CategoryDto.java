@@ -18,7 +18,6 @@ import java.util.List;
 public class CategoryDto {
 
     private Long id;
-    private BigDecimal totalPrice;
-    private LocalDateTime createdAt;
-    private List<OrderItemDto> orderItemList;
+    private String  name;
+    private List<ProductDto> productList;
 }
