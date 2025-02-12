@@ -1,4 +1,4 @@
-package com.ecom.viviki.execption;
+package com.ecom.viviki.exception;
 
 import com.ecom.viviki.dto.Response;
 import org.springframework.http.HttpStatus;

@@ -1,4 +1,4 @@
-package com.ecom.viviki.execption;
+package com.ecom.viviki.exception;
 
 public class InvalidCredentialsException extends RuntimeException{
     public InvalidCredentialsException(String message){
