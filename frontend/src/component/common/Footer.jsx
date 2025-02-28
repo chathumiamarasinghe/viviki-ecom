@@ -16,7 +16,7 @@ const Footer = () => {
                 </ul>
             </div>
             <div className="footer-info">
-                <p>&copy; 2024 Viviki Rubber Products PVT LTD . All right reserved.</p>
+                <p>&copy; 2024 VIVIKI RUBBER PRODUCTS PVT LTD. All right reserved.</p>
             </div>
         </footer>
     )
