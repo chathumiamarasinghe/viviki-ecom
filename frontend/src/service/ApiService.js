@@ -8,7 +8,7 @@ export default class ApiService{
         const token = localStorage.getItem("token");
         return {
             Authorization: `Bearer ${token}`,
-            "Content-Type": "application/ison"
+            "Content-Type": "application/json"
         };
     }
 
