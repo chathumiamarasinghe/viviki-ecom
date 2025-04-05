@@ -2,7 +2,7 @@ import axios from "axios";
 
 export default class ApiService {
 
-    static BASE_URL = "http://localhost:2424";
+    static BASE_URL = "http://localhost:8080";
 
     static getHeader() {
         const token = localStorage.getItem("token");
@@ -148,12 +148,13 @@ export default class ApiService {
     }
 
     static async updateOrderitemStatus(orderItemId, status) {
-        const response = await axios.put(`${this.BASE_URL}/order/update-item-status/${orderItemId}`, {}, {
-            headers: this.getHeader(),
-            params: {status}
-        })
-        return response.data;
-    }
+    const response = await axios.put(
+        `${this.BASE_URL}/order/update-item-status/${orderItemId}?status=${status}`, 
+        {}, 
+        { headers: this.getHeader() }
+    );
+    return response.data;
+}
 
 
 

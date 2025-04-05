@@ -1,5 +1,4 @@
 .footer {
-    position: fixed;
     bottom: 0;
     width: 100%;
     background: linear-gradient(135deg, #222, #444);
@@ -11,7 +10,6 @@
     border-radius: 10px 10px 0 0; 
     box-shadow: 0px -5px 15px rgba(0, 0, 0, 0.2); 
 }
-
 
 .footer-links ul {
     list-style: none;
@@ -36,15 +34,12 @@
     transition: background-color 0.3s, transform 0.2s;
 }
 
-
 .footer-links a:hover {
     background-color: rgba(255, 255, 255, 0.2);
     transform: translateY(-2px);
 }
 
-
 .footer-social {
-
     justify-content: center;
     margin-top: 10px;
 }
@@ -56,11 +51,9 @@
     transition: transform 0.3s, color 0.3s;
 }
 
-
 .footer-social a:hover {
     transform: scale(1.2); 
 }
-
 
 .footer-social a.facebook:hover {
     color: #1877F2; 
@@ -73,7 +66,6 @@
 .footer-social a.youtube:hover {
     color: #FF0000; 
 }
-
 
 .footer-info p {
     color: white;

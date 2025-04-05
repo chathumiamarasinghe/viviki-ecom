@@ -5,6 +5,7 @@ import Pagination from "../common/Pagination";
 import ApiService from "../../service/ApiService";
 import '../../style/home.css';
 import BannerPage from '../common/Banner';
+import CategoryList from '../common/CategoryList';
 
 
 const Home = () => {
@@ -48,6 +49,7 @@ const Home = () => {
     return(
         <div className="home">
         <BannerPage />
+        <CategoryList />
             {error ? (
                 <p className="error-message">{error}</p>
             ):(
