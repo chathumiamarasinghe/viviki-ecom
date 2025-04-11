@@ -57,7 +57,7 @@ const Navbar = () => {
     return (
         <nav className="navbar">
             <div className="navbar-brand">
-                <NavLink to="/"><img src="./logo.png" alt="logo" /></NavLink>
+                <NavLink to="/"><img src="./logo.png" alt="Rubber Store" /></NavLink>
             </div>
 
             {/* SEARCH FORM */}
@@ -105,9 +105,9 @@ const Navbar = () => {
     <NavLink to="/cart">
         <FaShoppingCart size={25}/>
     </NavLink>
-                {/* Toggle Button for Dark/Light Mode */}
+                
                 <button className="theme-toggle" onClick={toggleTheme}>
-                    {/* Show light mode button when in dark mode, and vice versa */}
+                    
                     {isDarkMode ? (
                         <img src={LightButton} alt="Light Mode" style={{ width: '40px', height: 'auto' }} />
                     ) : (
