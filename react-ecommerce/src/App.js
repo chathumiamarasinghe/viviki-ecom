@@ -24,7 +24,9 @@ import EditProductPage from './component/admin/EditProductPage';
 import AdminOrdersPage from './component/admin/AdminOrderPage';
 import AdminOrderDetailsPage from './component/admin/AdminOrderDetailsPage';
 import CheckoutButton from './component/pages/CheckoutButton';
-
+import CategoryChart from './component/admin/CategoryChart';
+import ProductChart from './component/admin/ProductChart';
+import OrderChart from './component/admin/OrderChart';
 
 function App() {
   return (
@@ -41,6 +43,10 @@ function App() {
           <Route path='/register' element={<RegisterPage/>}/>
           <Route path='/login' element={<LoginPage/>}/>
           <Route path='/checkout' element={<CheckoutButton/>}/>
+          <Route path='/CategoryChart' element={<CategoryChart/>}/>
+          <Route path='/ProductChart' element={<ProductChart/>}/>
+          <Route path='/OrderChart' element={<OrderChart/>}/>
+
 
           <Route path='/profile' element={<ProtectedRoute element={<ProfilePage/>} />} />
           <Route path='/add-address' element={<ProtectedRoute element={<AddressPage/>} />} />
