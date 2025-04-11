@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 import '../../style/adminOrderPage.css'
 import Pagination from "../common/Pagination";
 import ApiService from "../../service/ApiService";
+import OrderChart from "./OrderChart";
 
 
 const OrderStatus = ["PENDING", "CONFIRMED", "SHIPPED", "DELIVERED", "CANCELLED", "RETURNED"];
@@ -125,13 +126,17 @@ const AdminOrdersPage = () => {
                             <td>Rs.{order.price.toFixed(2)}</td>
                             <td>{new Date(order.createdAt).toLocaleDateString()}</td>
                             <td>
-                                <button onClick={()=> handleOrderDetails(order.id)}>Details</button>
+                                 <button className="btn btn-outline-warning" onClick={() => handleOrderDetails(order.id)}>
+                                    Details
+                                </button>
                             </td>
                         </tr>
                     ))}
                 </tbody>
 
             </table>
+
+            {orders.length > 0 && <OrderChart orders={orders} />}
 
             <Pagination
             currentPage={currentPage}

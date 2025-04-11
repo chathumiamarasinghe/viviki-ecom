@@ -53,16 +53,19 @@
     margin-bottom: 20px;
 }
 
-tbody button{
+tbody button {
     padding: 10px;
-    background-color: #f68b1e;
     border-radius: 5px;
     font-weight: 700;
-    color: #fff;
     font-size: 15px;
-    border: none;
+    border: 2px solid #f68b1e; 
+    background-color: transparent; 
+    color: #f68b1e; 
     cursor: pointer;
+    transition: background-color 0.3s, color 0.3s;
 }
-tbody button:hover{
-    background-color: #975818;
+
+tbody button:hover {
+    background-color: #f68b1e;
+    color: white; 
 }
