@@ -1,7 +1,7 @@
 .sidebar {
-    background-color: #c4803c;
+    background-color: #f68b1e;
     color: white;
-    height: 100vh;
+    height: 75vh;
     box-shadow: 2px 0 10px rgba(0, 0, 0, 0.1);
     border-radius: 20px;
   }
@@ -16,7 +16,7 @@
   }
   
   .nav-item:hover {
-    background-color: #f68b1e;
+    background-color: black;
     color: #fff !important;
     cursor: pointer;
   }

@@ -26,7 +26,7 @@ const AdminPage = () => {
             <Nav.Link onClick={() => navigate("/admin/orders")} className="nav-item">
               <FaClipboardList className="me-2" /> Orders
             </Nav.Link>
-            <Nav.Link onClick={() => navigate("#")} className="nav-item">
+            <Nav.Link onClick={() => navigate("/admin/materials")} className="nav-item">
               <FaThList className="me-2" /> Materials
             </Nav.Link>
             <Nav.Link onClick={() => navigate("#")} className="nav-item">
