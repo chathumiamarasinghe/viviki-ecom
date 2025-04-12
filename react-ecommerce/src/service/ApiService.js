@@ -184,5 +184,51 @@ export default class ApiService {
     }
 
 
+    /**MATERIAL ENDPOINT */
+
+    static async addMaterial(formData) {
+        const response = await axios.post(`${this.BASE_URL}/material/create`, formData, {
+            headers: {
+                ...this.getHeader(),
+                "Content-Type": "multipart/form-data"
+            }
+        });
+        return response.data;
+    }
+
+    // Update Material
+    static async updateMaterial(body) {
+        const response = await axios.put(`${this.BASE_URL}/material/update`, body, {
+             headers: this.getHeader()
+        });
+        return response.data;
+    }
+
+    static async getAllMaterials() {
+        const response = await axios.get(`${this.BASE_URL}/material/get-all`)
+        return response.data;
+    }
+
+    static async searchMaterials(searchValue) {
+        const response = await axios.get(`${this.BASE_URL}/material/search`, {
+            params: { searchValue }
+        });
+        return response.data;
+    }
+
+
+    static async getMaterialById(materialId) {
+        const response = await axios.get(`${this.BASE_URL}/material/get-by-material-id/${materialId}`)
+        return response.data;
+    }
+
+    static async deleteMaterial(materialId) {
+        const response = await axios.delete(`${this.BASE_URL}/material/delete/${materialId}`, {
+            headers: this.getHeader()
+        });
+        return response.data;
+    }
+
+
 
 }

@@ -27,6 +27,9 @@ import CheckoutButton from './component/pages/CheckoutButton';
 import CategoryChart from './component/admin/CategoryChart';
 import ProductChart from './component/admin/ProductChart';
 import OrderChart from './component/admin/OrderChart';
+import AdminMaterialPage from './component/admin/AdminMaterialPage';
+import AddMaterialPage from './component/admin/AddMaterialPage';
+import EditMaterialPage from './component/admin/EditMaterialPage';
 
 function App() {
   return (
@@ -60,6 +63,10 @@ function App() {
           <Route path='/admin/products' element={<AdminRoute element={<AdminProductPage/>} />} />
           <Route path='/admin/add-product' element={<AdminRoute element={<AddProductPage/>} />} />
           <Route path='/admin/edit-product/:productId' element={<AdminRoute element={<EditProductPage/>} />} />
+          <Route path='/admin/materials' element={<AdminRoute element={<AdminMaterialPage/>} />} />
+          <Route path='/admin/add-material' element={<AdminRoute element={<AddMaterialPage/>} />} />
+          <Route path='/admin/edit-material/:materialId' element={<AdminRoute element={<EditMaterialPage/>} />} />
+
 
           <Route path='/admin/orders' element={<AdminRoute element={<AdminOrdersPage/>} />} />
           <Route path='/admin/order-details/:itemId' element={<AdminRoute element={<AdminOrderDetailsPage/>} />} />
