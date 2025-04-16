@@ -30,6 +30,9 @@ import OrderChart from './component/admin/OrderChart';
 import AdminMaterialPage from './component/admin/AdminMaterialPage';
 import AddMaterialPage from './component/admin/AddMaterialPage';
 import EditMaterialPage from './component/admin/EditMaterialPage';
+import CategorySection from './component/pages/CategorySection';
+
+
 
 function App() {
   return (
@@ -49,6 +52,8 @@ function App() {
           <Route path='/CategoryChart' element={<CategoryChart/>}/>
           <Route path='/ProductChart' element={<ProductChart/>}/>
           <Route path='/OrderChart' element={<OrderChart/>}/>
+          <Route path='/category-section' element={<CategorySection />} />
+
 
 
           <Route path='/profile' element={<ProtectedRoute element={<ProfilePage/>} />} />
