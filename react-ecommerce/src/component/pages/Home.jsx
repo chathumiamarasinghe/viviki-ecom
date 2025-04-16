@@ -6,6 +6,7 @@ import ApiService from "../../service/ApiService";
 import '../../style/home.css';
 import BannerPage from '../common/Banner';
 import CategoryList from '../common/CategoryList';
+import CategorySection from '../pages/CategorySection';
 
 
 const Home = () => {
@@ -60,6 +61,7 @@ const Home = () => {
                     onPageChange={(page)=> setCurrentPage(page)}/>
                 </div>
             )}
+            <CategorySection />
         </div>
     )
 
