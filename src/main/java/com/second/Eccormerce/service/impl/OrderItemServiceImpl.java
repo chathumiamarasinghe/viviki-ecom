@@ -49,12 +49,23 @@ public class OrderItemServiceImpl implements OrderItemService {
 
         List<OrderItem> orderItems = orderRequest.getItems().stream().map(orderItemRequest -> {
             Product product = productRepo.findById(orderItemRequest.getProductId())
-                    .orElseThrow(()-> new NotFoundException("Product Not Found"));
+                    .orElseThrow(() -> new NotFoundException("Product Not Found"));
+
+            int orderQty = orderItemRequest.getQuantity();
+
+            // Check stock
+            if (product.getQuantity() < orderQty) {
+                throw new RuntimeException("Not enough stock for product: " + product.getName());
+            }
+
+            // Reduce stock
+            product.setQuantity(product.getQuantity() - orderQty);
+            productRepo.save(product); // ✅ Save updated quantity
 
             OrderItem orderItem = new OrderItem();
             orderItem.setProduct(product);
-            orderItem.setQuantity(orderItemRequest.getQuantity());
-            orderItem.setPrice(product.getPrice().multiply(BigDecimal.valueOf(orderItemRequest.getQuantity()))); //set price according to the quantity
+            orderItem.setQuantity(orderQty);
+            orderItem.setPrice(product.getPrice().multiply(BigDecimal.valueOf(orderQty)));
             orderItem.setStatus(OrderStatus.PENDING);
             orderItem.setUser(user);
             return orderItem;
