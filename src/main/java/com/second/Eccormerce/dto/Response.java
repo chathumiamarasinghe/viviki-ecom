@@ -35,6 +35,9 @@ public class Response {
     private ProductDto product;
     private List<ProductDto> productList;
 
+    private MaterialDto material;
+    private List<MaterialDto> materialList;
+
     private OrderItemDto orderItem;
     private List<OrderItemDto> orderItemList;
 
