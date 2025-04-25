@@ -63,7 +63,18 @@ public class EntityDtoMapper {
         productDto.setDescription(product.getDescription());
         productDto.setPrice(product.getPrice());
         productDto.setImageUrl(product.getImageUrl());
+        productDto.setQuantity(product.getQuantity());
         return productDto;
+    }
+
+    //Material to DTO Basic
+    public MaterialDto mapMaterialToDtoBasic(Material material){
+        MaterialDto materialDto = new MaterialDto();
+        materialDto.setId(material.getId());
+        materialDto.setName(material.getName());
+        materialDto.setDescription(material.getDescription());
+        materialDto.setQuantity(material.getQuantity());
+        return materialDto;
     }
 
     public UserDto mapUserToDtoPlusAddress(User user){
