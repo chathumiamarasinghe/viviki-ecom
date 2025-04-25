@@ -1,5 +1,5 @@
 package com.second.Eccormerce.enums;
 
 public enum UserRole {
-    ADMIN, USER
+    ADMIN, USER, MANAGER, DELIVERY
 }
