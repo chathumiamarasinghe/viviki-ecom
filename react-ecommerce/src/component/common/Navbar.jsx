@@ -13,6 +13,9 @@ const Navbar = () => {
     const navigate = useNavigate();
 
     const isAdmin = ApiService.isAdmin();
+    const isInventoryManager = ApiService.isInventoryManager();
+    const isDeliveryPerson = ApiService.isDeliveryPerson();
+
     const isAuthenticated = ApiService.isAuthenticated();
 
     
@@ -74,7 +77,7 @@ const Navbar = () => {
         <FaHome size={25}/> 
     </NavLink>
     
-    <NavLink to="/categories" className={({ isActive }) => (isActive ? "active" : "")}>
+    <NavLink to="/products" className={({ isActive }) => (isActive ? "active" : "")}>
         <FaThList size={25}/>
     </NavLink>
 
@@ -84,11 +87,24 @@ const Navbar = () => {
         </NavLink>
     )}
 
+    {/* Role-Based Navigation */}
     {isAdmin && (
-        <NavLink to="/admin" className={({ isActive }) => (isActive ? "active" : "")}>
-            <FaUserShield size={25}/>
-        </NavLink>
-    )}
+                    <NavLink to="/admin" className={({ isActive }) => isActive ? "active" : ""}>
+                        <FaUserShield size={25} />
+                    </NavLink>
+                )}
+
+                {isInventoryManager && (
+                    <NavLink to="/manager" className={({ isActive }) => isActive ? "active" : ""}>
+                        <FaUserShield size={25} />
+                    </NavLink>
+                )}
+
+                {isDeliveryPerson && (
+                    <NavLink to="/delivery" className={({ isActive }) => isActive ? "active" : ""}>
+                        <FaUserShield size={25} />
+                    </NavLink>
+                )}
 
     {!isAuthenticated && (
         <NavLink to="/login" className={({ isActive }) => (isActive ? "active" : "")}>

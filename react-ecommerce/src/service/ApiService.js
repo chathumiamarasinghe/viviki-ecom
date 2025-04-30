@@ -84,6 +84,14 @@ export default class ApiService {
         return response.data;
     }
 
+    static async downloadProductReport() {
+        const response = await axios.get(`${this.BASE_URL}/api/report/products`, {
+            headers: this.getHeader(),
+            responseType: 'blob'
+        });
+        return response.data;
+    }
+
     /**CATEGORY */
     static async createCategory(body) {
         const response = await axios.post(`${this.BASE_URL}/category/create`, body, {
@@ -183,6 +191,16 @@ export default class ApiService {
         return role === 'ADMIN'
     }
 
+    static isInventoryManager() {
+        const role = localStorage.getItem('role');
+        return role === 'INVENTORY_MANAGER';
+    }
+    
+    static isDeliveryPerson() {
+        const role = localStorage.getItem('role');
+        return role === 'DELIVERY_PERSON';
+    }
+
 
     /**MATERIAL ENDPOINT */
 
@@ -199,7 +217,7 @@ export default class ApiService {
     // Update Material
     static async updateMaterial(body) {
         const response = await axios.put(`${this.BASE_URL}/material/update`, body, {
-             headers: this.getHeader()
+            headers: this.getHeader()
         });
         return response.data;
     }
@@ -229,6 +247,39 @@ export default class ApiService {
         return response.data;
     }
 
+    /** REVIEW ENDPOINTS */
+
+// Create a new review
+static async createReview(review) {
+    const response = await axios.post(`${this.BASE_URL}/api/reviews`, review, {
+        headers: this.getHeader()
+    });
+    return response.data;
+}
+
+// Get all reviews by product ID
+static async getReviewsByProductId(productId) {
+    const response = await axios.get(`${this.BASE_URL}/api/reviews/product/${productId}`);
+    return response.data;
+}
+
+// Order report
+static async downloadOrderItemsReport() {
+    const response = await axios.get(`${this.BASE_URL}/api/report/orderitems`, {
+        headers: this.getHeader(),
+        responseType: 'blob'   
+    });
+    return response.data;
+}
+
+// Product report
+static async downloadOrderItemsReport() {
+    const response = await axios.get(`${this.BASE_URL}/api/report/productlist`, {
+        headers: this.getHeader(),
+        responseType: 'blob'   
+    });
+    return response.data;
+}
 
 
 }
