@@ -44,9 +44,6 @@ const ProfilePage = () => {
         currentPage * itemsPerPage
     );
 
-
-
-
     return (
         <div className="profile-page">
             <h2>Welcome {userInfo.name}</h2>

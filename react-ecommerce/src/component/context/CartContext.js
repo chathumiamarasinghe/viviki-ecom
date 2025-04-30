@@ -10,7 +10,7 @@ const initialState = {
 const cartReducer = (state, action) =>{
     switch(action.type){
         case 'ADD_ITEM': {
-            //identify exisitng item
+            
             const existingItem = state.cart.find(item => item.id === action.payload.id);
             let newCart;
 
