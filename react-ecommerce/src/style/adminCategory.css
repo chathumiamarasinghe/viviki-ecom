@@ -1,50 +1,77 @@
 .admin-category-page {
-    max-width: 800px;
-    margin: 0 auto 50px auto;
-}
-.admin-category-list{
-    border-radius: 5px;
+    max-width: 900px;
+    margin: 50px auto;
     padding: 20px;
 }
 
-.admin-category-list h2{
-    font-size: 25px;
+.admin-category-list h2 {
+    font-size: 28px;
     margin-bottom: 20px;
 }
-.admin-category-list button{
+
+.add-btn {
+    background-color: transparent;
+    color: #f68b1e;
+    font-size: 16px;
+    border: 2px solid #f68b1e;
+    padding: 8px 16px;
+    border-radius: 4px;
+    cursor: pointer;
+    margin-bottom: 20px;
+    transition: all 0.3s ease;
+}
+
+.add-btn:hover {
     background-color: #f68b1e;
     color: #fff;
-    font-size: 20px;
-    border: none;
-    padding: 10px 15px;
-    margin-bottom: 10px;
-    cursor: pointer;
+}
+
+.category-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 16px;
+}
+
+.category-table th, .category-table td {
+    border: 1px solid #ddd;
+    padding: 12px 15px;
+    text-align: left;
+}
+
+.category-table th {
+    background-color: #f4f4f4;
+    color: #333;
+}
+
+.category-table tbody tr:nth-child(even) {
+    background-color: #fafafa;
+}
+
+.outline-btn {
+    padding: 6px 12px;
+    border: 2px solid;
     border-radius: 4px;
-}
-.admin-category-list button:hover{
-    background-color: #a25d19;
-}
-
-.admin-category-list ul li{
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    padding: 10px 10px 10px 15px;
-    margin-bottom: 1.5px;
-    border-radius: 5px;
-    border: 1px solid #ccc;
-}
-.admin-category-list ul li span{
-    color: #444;
+    font-size: 14px;
+    margin-right: 8px;
+    cursor: pointer;
+    transition: 0.3s;
+    background-color: transparent;
 }
 
-.admin-bt button{
+.edit-btn {
+    border-color: #f68b1e;
+    color: #f68b1e;
+}
+.edit-btn:hover {
+    background-color: #f68b1e;
+    color: #fff;
+}
+
+.delete-btn {
+    border-color: tomato;
+    color: tomato;
+}
+.delete-btn:hover {
     background-color: tomato;
     color: #fff;
-    border: 8px 16px;
-    cursor: pointer;
-    margin-left: 10px;
-}
-.admin-bt .admin-btn-edit{
-    background-color: #f68b1e;
 }

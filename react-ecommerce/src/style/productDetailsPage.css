@@ -38,3 +38,19 @@
 .product-detail button:hover{
     background-color: #8b4c0d;
 }
+
+.stock-text {
+    color: #d8000c;
+    font-size: 14px;
+}
+
+.quantity-controls {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.quantity-controls button.disabled {
+    background-color: #ccc;
+    cursor: not-allowed;
+}

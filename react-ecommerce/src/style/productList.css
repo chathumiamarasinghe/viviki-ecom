@@ -115,3 +115,14 @@
     font-weight: bold;
     color: #333;
 }
+
+.quantity-btn.disabled {
+    background-color: #ccc;
+    cursor: not-allowed;
+}
+
+.add-to-cart-btn:disabled {
+    background-color: #ccc;
+    cursor: not-allowed;
+}
+
