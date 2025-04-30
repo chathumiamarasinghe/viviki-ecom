@@ -27,7 +27,7 @@ const AdminProductPage = () => {
         fetchProducts();
     }, [currentPage]);
 
-    const handleEdit = async (id) => {
+    const handleEdit = (id) => {
         navigate(`/admin/edit-product/${id}`);
     };
 
@@ -43,32 +43,61 @@ const AdminProductPage = () => {
         }
     };
 
+    const handleDownloadReport = async () => {
+            try {
+                const pdfBlob = await ApiService.downloadOrderItemsReport();
+        
+                const url = window.URL.createObjectURL(new Blob([pdfBlob], { type: 'application/pdf' }));
+                const link = document.createElement('a');
+                link.href = url;
+                link.setAttribute('download', 'productlistReport.pdf'); 
+                document.body.appendChild(link);
+                link.click();
+                link.parentNode.removeChild(link);
+            } catch (error) {
+                console.error("Failed to download report:", error);
+            }
+        }
+
     return (
-        <div className="admin-product-list">
-            {error ? (
-                <p className="error-message">{error}</p>
-            ) : (
-                <div>
-                    <h2>Products</h2>
-                    <button className="product-btn" onClick={() => navigate('/admin/add-product')}>
-                        Add Product
-                    </button>
-                    <ul>
+        <div className="admin-product-page">
+            <div className="admin-product-list">
+                <h2>Products</h2>
+                <button className="btn-primary" onClick={() => navigate('/admin/add-product')}>
+                    Add Product
+                </button>
+                {error && <p className="error-message">{error}</p>}
+                <button className="btn-primary" onClick={handleDownloadReport}>
+                      Download Product Report
+                </button>
+
+                <table className="product-table">
+                    <thead>
+                        <tr>
+                            <th>Name</th>
+                            <th>Quantity</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
                         {products.map((product) => (
-                            <li key={product.id}>
-                                <span><strong>{product.name}</strong> — Quantity: {product.quantity}</span>
-                                <button className="product-btn" onClick={() => handleEdit(product.id)}>Edit</button>
-                                <button className="product-btn-delete" onClick={() => handleDelete(product.id)}>Delete</button>
-                            </li>
+                            <tr key={product.id}>
+                                <td>{product.name}</td>
+                                <td>{product.quantity}</td>
+                                <td>
+                                    <button className="btn-outline" onClick={() => handleEdit(product.id)}>Edit</button>
+                                    <button className="btn-delete" onClick={() => handleDelete(product.id)}>Delete</button>
+                                </td>
+                            </tr>
                         ))}
-                    </ul>
-                    <Pagination
-                        currentPage={currentPage}
-                        totalPages={totalPages}
-                        onPageChange={(page) => setCurrentPage(page)}
-                    />
-                </div>
-            )}
+                    </tbody>
+                </table>
+                <Pagination
+                    currentPage={currentPage}
+                    totalPages={totalPages}
+                    onPageChange={(page) => setCurrentPage(page)}
+                />
+            </div>
         </div>
     );
 };

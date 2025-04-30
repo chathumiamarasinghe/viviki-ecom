@@ -78,11 +78,32 @@ const AdminOrdersPage = () => {
         navigate(`/admin/order-details/${id}`)
     }
 
+    const handleDownloadReport = async () => {
+        try {
+            const pdfBlob = await ApiService.downloadOrderItemsReport();
+    
+            const url = window.URL.createObjectURL(new Blob([pdfBlob], { type: 'application/pdf' }));
+            const link = document.createElement('a');
+            link.href = url;
+            link.setAttribute('download', 'orderReport.pdf'); 
+            document.body.appendChild(link);
+            link.click();
+            link.parentNode.removeChild(link);
+        } catch (error) {
+            console.error("Failed to download report:", error);
+        }
+    }
+
 
     return (
         <div className="admin-orders-page">
             <h2>Orders</h2>
             {error && <p className="error-message">{error}</p>}
+
+            <button onClick={handleDownloadReport} className="download-report-btn">
+    Download Orders Report
+</button>
+
             <div className="filter-container">
                 <div className="statusFilter">
                     <label >Filter By Status</label>
