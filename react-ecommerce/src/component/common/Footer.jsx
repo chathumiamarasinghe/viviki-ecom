@@ -1,6 +1,7 @@
 import React from "react";
 import '../../style/footer.css';
 import { NavLink } from "react-router-dom";
+import BottomBanner from './BottomBanner';
 
 // Import social media icons from react-icons
 import { FaFacebook, FaInstagram, FaYoutube } from 'react-icons/fa';
@@ -17,6 +18,8 @@ const Footer = () => {
                     <li><NavLink to={"/"}>FAQs</NavLink></li>
                 </ul>
             </div>
+
+            <BottomBanner />
 
             {/* Social Media Icons */}
             <div className="footer-social">
