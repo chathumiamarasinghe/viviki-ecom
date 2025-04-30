@@ -4,78 +4,80 @@ import { useCart } from "../context/CartContext";
 import ApiService from "../../service/ApiService";
 import '../../style/productDetailsPage.css';
 
-
 const ProductDetailsPage = () => {
-
     const {productId} = useParams();
     const {cart, dispatch} = useCart();
     const [product, setProduct] = useState(null);
 
-    useEffect(()=>{
+    useEffect(() => {
         fetchProduct();
-    }, [productId])
+    }, [productId]);
 
     const fetchProduct = async () => {
         try {
             const response = await ApiService.getProductById(productId);
             setProduct(response.product);
-            
         } catch (error) {
-            console.log(error.message || error)
+            console.log(error.message || error);
         }
-    }
+    };
 
-    
+    const cartItem = cart.find(item => item.id === product?.id);
+    const cartQuantity = cartItem?.quantity || 0;
+
     const addToCart = () => {
-        if (product) {
-            dispatch({type: 'ADD_ITEM', payload: product});   
+        if (product && cartQuantity < product.quantity) {
+            dispatch({ type: 'ADD_ITEM', payload: product });
         }
-    }
+    };
 
     const incrementItem = () => {
-        if(product){
-            dispatch({type: 'INCREMENT_ITEM', payload: product});
- 
+        if (product && cartQuantity < product.quantity) {
+            dispatch({ type: 'INCREMENT_ITEM', payload: product });
         }
-    }
+    };
 
     const decrementItem = () => {
         if (product) {
-            const cartItem = cart.find(item => item.id === product.id);
-            if (cartItem && cartItem.quantity > 1) {
-                dispatch({type: 'DECREMENT_ITEM', payload: product}); 
-            }else{
-                dispatch({type: 'REMOVE_ITEM', payload: product}); 
+            if (cartQuantity > 1) {
+                dispatch({ type: 'DECREMENT_ITEM', payload: product });
+            } else {
+                dispatch({ type: 'REMOVE_ITEM', payload: product });
             }
-            
         }
-    }
+    };
 
     if (!product) {
-        return <p>Loading product details ...</p>
+        return <p>Loading product details ...</p>;
     }
 
-    const cartItem = cart.find(item => item.id === product.id);
-
-    return(
+    return (
         <div className="product-detail">
             <img src={product?.imageUrl} alt={product?.name} />
             <h1>{product?.name}</h1>
             <p>{product?.description}</p>
             <span>Rs.{product.price.toFixed(2)}</span>
+            <span className="stock-text">Only {product.quantity} item(s) left</span>
+
             {cartItem ? (
                 <div className="quantity-controls">
                     <button onClick={decrementItem}>-</button>
                     <span>{cartItem.quantity}</span>
-                    <button onClick={incrementItem}>+</button>
+                    <button 
+                        onClick={incrementItem} 
+                        disabled={cartQuantity >= product.quantity}
+                        className={cartQuantity >= product.quantity ? "disabled" : ""}
+                    >
+                        +
+                    </button>
                 </div>
-            ):(
-                <button onClick={addToCart}>Add To Cart</button>
+            ) : (
+                <button onClick={addToCart} disabled={product.quantity === 0}>
+                    {product.quantity === 0 ? "Out of Stock" : "Add To Cart"}
+                </button>
             )}
-
         </div>
-    )
-
-}
+    );
+};
 
 export default ProductDetailsPage;

@@ -1,71 +1,85 @@
-import React, {useEffect, useState} from "react";
-import { useLocation } from "react-router-dom";
+import React, { useEffect, useState } from "react";
+import { useLocation, useNavigate } from "react-router-dom";
 import ProductList from "../common/ProductList";
-import Pagination from "../common/Pagination";
 import ApiService from "../../service/ApiService";
 import '../../style/home.css';
 import BannerPage from '../common/Banner';
 import CategoryList from '../common/CategoryList';
 import CategorySection from '../pages/CategorySection';
+import { FaArrowRight } from "react-icons/fa";
 
+const shuffleArray = (array) => {
+    return [...array].sort(() => Math.random() - 0.5);
+};
 
 const Home = () => {
     const location = useLocation();
-    const [products, setProducts] = useState([]);
-    const [currentPage, setCurrentPage] = useState(1);
-    const [totalPages, setTotalPages] = useState(0);
+    const navigate = useNavigate();
+    const [allProducts, setAllProducts] = useState([]);
+    const [visibleCount, setVisibleCount] = useState(8);
     const [error, setError] = useState(null);
-    const itemsPerPage = 10;
 
-    useEffect(()=> {
-
+    useEffect(() => {
         const fetchProducts = async () => {
-            try{
-                let allProducts = [];
+            try {
                 const queryparams = new URLSearchParams(location.search);
-                const searchItem = queryparams.get('search')
-
+                const searchItem = queryparams.get('search');
+                let response;
                 if (searchItem) {
-                    const response = await ApiService.searchProducts(searchItem);
-                    allProducts = response.productList || [];
-                }else{
-                    const response = await ApiService.getAllProducts();
-                    allProducts = response.productList || [];
-
+                    response = await ApiService.searchProducts(searchItem);
+                } else {
+                    response = await ApiService.getAllProducts();
                 }
 
-                setTotalPages(Math.ceil(allProducts.length/itemsPerPage));
-                setProducts(allProducts.slice((currentPage -1) * itemsPerPage, currentPage * itemsPerPage));
-               
-            }catch(error){
-                setError(error.response?.data?.message || error.message || 'unable to fetch products')
+                const productList = shuffleArray(response.productList || []);
+                setAllProducts(productList);
+            } catch (error) {
+                setError(error.response?.data?.message || error.message || 'Unable to fetch products');
             }
-        }
+        };
 
         fetchProducts();
+    }, [location.search]);
 
-    },[location.search, currentPage])
+    const handleViewMore = () => {
+        
+            navigate("/products");
+        
+    };
 
+    const visibleProducts = allProducts.slice(0, visibleCount);
 
-    return(
+    return (
         <div className="home">
-        <BannerPage />
-        <CategoryList />
+            <BannerPage />
+            <CategoryList />
             {error ? (
                 <p className="error-message">{error}</p>
-            ):(
-                <div>
-                    <ProductList products={products}/>
-                    <Pagination  currentPage={currentPage}
-                    totalPages={totalPages}
-                    onPageChange={(page)=> setCurrentPage(page)}/>
+            ) : (
+                <div className="product-grid">
+                    <ProductList products={visibleProducts} />
+                    {allProducts.length > visibleCount && (
+                        <div className="arrow-inline" onClick={handleViewMore}>
+                            <FaArrowRight className="arrow-icon" />
+                        </div>
+                    )}
                 </div>
             )}
             <CategorySection />
+            {error ? (
+                <p className="error-message">{error}</p>
+            ) : (
+                <div className="product-grid">
+                    <ProductList products={visibleProducts} />
+                    {allProducts.length > visibleCount && (
+                        <div className="arrow-inline" onClick={handleViewMore}>
+                            <FaArrowRight className="arrow-icon" />
+                        </div>
+                    )}
+                </div>
+            )}
         </div>
-    )
-
-
-}
+    );
+};
 
 export default Home;

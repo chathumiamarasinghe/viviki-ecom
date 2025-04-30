@@ -10,7 +10,7 @@ const AddProductPage = () => {
     const [name, setName] = useState('');
     const [description, setDescription] = useState('');
     const [price, setPrice] = useState('');
-    const [quantity, setQuantity] = useState(''); // ✅ New state
+    const [quantity, setQuantity] = useState('');
     const [message, setMessage] = useState('');
 
     const navigate = useNavigate();
@@ -32,7 +32,7 @@ const AddProductPage = () => {
             formData.append('name', name);
             formData.append('description', description);
             formData.append('price', price);
-            formData.append('quantity', quantity); // ✅ Add quantity
+            formData.append('quantity', quantity);
 
             const response = await ApiService.addProduct(formData);
             if (response.status === 200) {
@@ -84,7 +84,7 @@ const AddProductPage = () => {
 
                 <input 
                     type="number" 
-                    placeholder="Quantity"        // ✅ Input field
+                    placeholder="Quantity"        
                     value={quantity}
                     onChange={(e) => setQuantity(e.target.value)} 
                 />

@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate, useParams } from "react-router-dom";
-import '../../style/addProduct.css'; // You can rename this to addMaterial.css if needed
+import '../../style/addProduct.css';
 import ApiService from "../../service/ApiService";
 
 const EditMaterialPage = () => {
@@ -39,7 +39,7 @@ const EditMaterialPage = () => {
                 setMessage("Material updated successfully!");
                 setTimeout(() => {
                     setMessage('');
-                    navigate('/admin/materials'); // 👈 adjust route as needed
+                    navigate('/admin/materials');
                 }, 3000);
             }
         } catch (error) {

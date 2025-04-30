@@ -90,3 +90,14 @@
         margin: 5px 0;
     }
 }
+
+.home-image-container {
+    text-align: center;
+    margin: 30px 0;
+}
+
+.home-banner-image {
+    max-width: 20%;
+    height: auto;
+    border-radius: 20px;
+}

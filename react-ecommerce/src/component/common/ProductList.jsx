@@ -8,11 +8,17 @@ const ProductList = ({ products }) => {
     const { cart, dispatch } = useCart();
 
     const addToCart = (product) => {
-        dispatch({ type: "ADD_ITEM", payload: product });
+        const cartItem = cart.find(item => item.id === product.id);
+        if (!cartItem || cartItem.quantity < product.quantity) {
+            dispatch({ type: "ADD_ITEM", payload: product });
+        }
     };
 
     const incrementItem = (product) => {
-        dispatch({ type: "INCREMENT_ITEM", payload: product });
+        const cartItem = cart.find(item => item.id === product.id);
+        if (cartItem.quantity < product.quantity) {
+            dispatch({ type: "INCREMENT_ITEM", payload: product });
+        }
     };
 
     const decrementItem = (product) => {
@@ -28,6 +34,7 @@ const ProductList = ({ products }) => {
         <div className="product-list">
             {products.map((product) => {
                 const cartItem = cart.find((item) => item.id === product.id);
+                const cartQuantity = cartItem?.quantity || 0;
                 return (
                     <div className="product-item" key={product.id}>
                         <Link to={`/product/${product.id}`}>
@@ -35,6 +42,7 @@ const ProductList = ({ products }) => {
                             <h3>{product.name}</h3>
                             <p>{product.description}</p>
                             <span className="price">Rs. {product.price.toFixed(2)}</span>
+                            <span className="stock-text">Only {product.quantity} item(s) left</span>
                         </Link>
                         {cartItem ? (
                             <div className="quantity-controls">
@@ -42,13 +50,21 @@ const ProductList = ({ products }) => {
                                     <FiMinus />
                                 </button>
                                 <span>{cartItem.quantity}</span>
-                                <button onClick={() => incrementItem(product)} className="quantity-btn">
+                                <button
+                                    onClick={() => incrementItem(product)}
+                                    className={`quantity-btn ${cartQuantity >= product.quantity ? 'disabled' : ''}`}
+                                    disabled={cartQuantity >= product.quantity}
+                                >
                                     <FiPlus />
                                 </button>
                             </div>
                         ) : (
-                            <button onClick={() => addToCart(product)} className="add-to-cart-btn">
-                                <FiShoppingCart /> Add to Cart
+                            <button
+                                onClick={() => addToCart(product)}
+                                className="add-to-cart-btn"
+                                disabled={product.quantity === 0}
+                            >
+                                <FiShoppingCart /> {product.quantity === 0 ? "Out of Stock" : "Add to Cart"}
                             </button>
                         )}
                     </div>

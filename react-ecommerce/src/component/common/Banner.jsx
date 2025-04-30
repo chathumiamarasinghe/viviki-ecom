@@ -7,7 +7,7 @@ import Banner4 from "../../assets/common/banner4.png";
 
 const BannerCarousel = () => {
   return (
-    <Carousel>
+    <Carousel interval={2000}>
       <Carousel.Item>
         <img
           className="d-block w-75 mx-auto"
