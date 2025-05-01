@@ -31,7 +31,7 @@ const InventoryManagerPage = () => {
         
         <Col md={10} className="p-5">
           <h1>Welcome</h1>
-          <p>Select an option from the sidebar to manage your store.</p>
+          <p>Select an option from the sidebar to manage your store with categories, products and materials.</p>
 
           
         </Col>
