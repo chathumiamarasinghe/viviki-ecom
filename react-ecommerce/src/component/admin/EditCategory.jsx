@@ -9,6 +9,12 @@ const EditCategory = () => {
     const [message, setMessage] = useState('');
     const navigate = useNavigate();
 
+    useEffect(() => {
+            if (!ApiService.isAdminOrInventoryManager()) {
+                navigate("/unauthorized"); // Redirect if not allowed
+            }
+        }, [navigate]);
+
 
     useEffect(() => {
         fetchCategory(categoryId);
