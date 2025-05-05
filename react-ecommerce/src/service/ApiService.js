@@ -20,8 +20,16 @@ export default class ApiService {
 
 
     static async loginUser(loginDetails) {
-        const response = await axios.post(`${this.BASE_URL}/auth/login`, loginDetails)
-        return response.data;
+        const response = await axios.post(`${this.BASE_URL}/auth/login`, loginDetails);
+        const data = response.data;
+    
+        // Assuming the response contains token and role
+        if (data.token && data.role) {
+            localStorage.setItem("token", data.token);
+            localStorage.setItem("role", data.role); 
+        }
+    
+        return data;
     }
 
 
@@ -200,6 +208,16 @@ export default class ApiService {
         const role = localStorage.getItem('role');
         return role === 'DELIVERY_PERSON';
     }
+
+    static isAdminOrInventoryManager() {
+        const role = localStorage.getItem('role');
+        return role === 'ADMIN' || role === 'INVENTORY_MANAGER';
+    }
+
+    /**static isAdminOrDeliveryPerson() {
+        const role = localStorage.getItem('role');
+        return role === 'ADMIN' || role === 'DELIVERY_PERSON';
+    }*/
 
 
     /**MATERIAL ENDPOINT */
