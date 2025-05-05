@@ -12,6 +12,12 @@ const EditMaterialPage = () => {
     const navigate = useNavigate();
 
     useEffect(() => {
+                if (!ApiService.isAdminOrInventoryManager()) {
+                    navigate("/unauthorized");
+                }
+            }, [navigate]);
+
+    useEffect(() => {
         if (materialId) {
             ApiService.getMaterialById(materialId).then((response) => {
                 const material = response.material;
