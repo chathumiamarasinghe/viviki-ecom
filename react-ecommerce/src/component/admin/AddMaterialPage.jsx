@@ -1,6 +1,6 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import '../../style/addProduct.css'; // You can rename this to addMaterial.css if needed
+import '../../style/addProduct.css';
 import ApiService from "../../service/ApiService";
 
 const AddMaterialPage = () => {
@@ -10,6 +10,12 @@ const AddMaterialPage = () => {
     const [message, setMessage] = useState('');
 
     const navigate = useNavigate();
+
+    useEffect(() => {
+            if (!ApiService.isAdminOrInventoryManager()) {
+                navigate("/unauthorized");
+            }
+        }, [navigate]);
 
     const handleSubmit = async (e) => {
         e.preventDefault();

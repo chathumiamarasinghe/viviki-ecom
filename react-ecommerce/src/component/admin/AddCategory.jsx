@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import ApiService from "../../service/ApiService";
 import { useNavigate } from "react-router-dom";
 import '../../style/addCategory.css'
@@ -7,6 +7,13 @@ const AddCategory = () => {
     const [name, setName] = useState('');
     const [message, setMessage] = useState('');
     const navigate = useNavigate();
+
+    useEffect(() => {
+            if (!ApiService.isAdminOrInventoryManager()) {
+                navigate("/unauthorized"); // Redirect if not allowed
+            }
+        }, [navigate]);
+
 
     const handleSubmit = async (e) => {
         e.preventDefault();

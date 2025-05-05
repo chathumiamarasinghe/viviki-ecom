@@ -16,13 +16,13 @@ const InventoryManagerPage = () => {
         <Col md={2} className="sidebar d-flex flex-column align-items-start p-3">
           <h4 className="text-white mb-4">Inventory Manager</h4>
           <Nav className="flex-column w-100">
-            <Nav.Link onClick={() => navigate("/manager/categories")} className="nav-item">
+            <Nav.Link onClick={() => navigate("/admin/categories")} className="nav-item">
               <FaTags className="me-2" /> Categories
             </Nav.Link>
-            <Nav.Link onClick={() => navigate("/manager/products")} className="nav-item">
+            <Nav.Link onClick={() => navigate("/admin/products")} className="nav-item">
               <FaBoxes className="me-2" /> Products
             </Nav.Link>
-            <Nav.Link onClick={() => navigate("/manager/materials")} className="nav-item">
+            <Nav.Link onClick={() => navigate("/admin/materials")} className="nav-item">
               <FaThList className="me-2" /> Materials
             </Nav.Link>
           </Nav>

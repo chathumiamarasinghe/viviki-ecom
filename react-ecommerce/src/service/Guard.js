@@ -41,3 +41,23 @@ export const DeliveryPersonRoute = ({element: Component}) => {
         <Navigate to="/login" replace state={{ from: location }} />
     );
 };
+
+export const AdminOrInventoryManagerRoute = ({ element: Component }) => {
+    const location = useLocation();
+
+    return ApiService.isAdminOrInventoryManager() ? (
+        Component
+    ) : (
+        <Navigate to="/login" replace state={{ from: location }} />
+    );
+};
+
+/**export const AdminOrDeliveryPersonRoute = ({ element: Component }) => {
+    const location = useLocation();
+
+    return ApiService.isAdminOrDeliveryPerson() ? (
+        Component
+    ) : (
+        <Navigate to="/login" replace state={{ from: location }} />
+    );
+};*/

@@ -75,35 +75,22 @@ const AdminOrdersPage = () => {
     }
 
     const handleOrderDetails = (id) => {
-        navigate(`/admin/order-details/${id}`)
-    }
-
-    const handleDownloadReport = async () => {
-        try {
-            const pdfBlob = await ApiService.downloadOrderItemsReport();
+        const role = localStorage.getItem("role");
     
-            const url = window.URL.createObjectURL(new Blob([pdfBlob], { type: 'application/pdf' }));
-            const link = document.createElement('a');
-            link.href = url;
-            link.setAttribute('download', 'orderReport.pdf'); 
-            document.body.appendChild(link);
-            link.click();
-            link.parentNode.removeChild(link);
-        } catch (error) {
-            console.error("Failed to download report:", error);
+        if (role === "ADMIN") {
+            navigate(`/admin/order-details/${id}`);
+        } else if (role === "DELIVERY_PERSON") {
+            navigate(`/delivery/order-details/${id}`);
+        } else {
+            console.warn("Unknown role or unauthorized access");
         }
-    }
+    };
 
 
     return (
         <div className="admin-orders-page">
             <h2>Orders</h2>
             {error && <p className="error-message">{error}</p>}
-
-            <button onClick={handleDownloadReport} className="download-report-btn">
-    Download Orders Report
-</button>
-
             <div className="filter-container">
                 <div className="statusFilter">
                     <label >Filter By Status</label>

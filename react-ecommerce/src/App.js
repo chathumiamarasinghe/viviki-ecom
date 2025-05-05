@@ -1,6 +1,6 @@
 import './App.css';
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
-import { ProtectedRoute, AdminRoute, InventoryManagerRoute, DeliveryPersonRoute } from './service/Guard';
+import { ProtectedRoute, AdminRoute, InventoryManagerRoute, DeliveryPersonRoute, AdminOrInventoryManagerRoute, AdminOrDeliveryPersonRoute } from './service/Guard';
 import "bootstrap/dist/css/bootstrap.min.css";
 import Navbar from './component/common/Navbar';
 import Footer from './component/common/Footer';
@@ -26,7 +26,6 @@ import AdminOrdersPage from './component/admin/AdminOrderPage';
 import AdminOrderDetailsPage from './component/admin/AdminOrderDetailsPage';
 import CheckoutButton from './component/pages/CheckoutButton';
 import CategoryChart from './component/admin/CategoryChart';
-import ProductChart from './component/admin/ProductChart';
 import OrderChart from './component/admin/OrderChart';
 import AdminMaterialPage from './component/admin/AdminMaterialPage';
 import AddMaterialPage from './component/admin/AddMaterialPage';
@@ -53,7 +52,6 @@ function App() {
           <Route path='/login' element={<LoginPage/>}/>
           <Route path='/checkout' element={<CheckoutButton/>}/>
           <Route path='/CategoryChart' element={<CategoryChart/>}/>
-          <Route path='/ProductChart' element={<ProductChart/>}/>
           <Route path='/OrderChart' element={<OrderChart/>}/>
           <Route path='/category-section' element={<CategorySection />} />
       
@@ -65,7 +63,7 @@ function App() {
 
           {/* ADMIN ROUTES */}
           <Route path='/admin' element={<AdminRoute element={<AdminPage/>} />} />
-          <Route path='/admin/categories' element={<AdminRoute element={<AdminCategoryPage/>} />} />
+          {/*<Route path='/admin/categories' element={<AdminRoute element={<AdminCategoryPage/>} />} />
           <Route path='/admin/add-category' element={<AdminRoute element={<AddCategory/>} />} />
           <Route path='/admin/edit-category/:categoryId' element={<AdminRoute element={<EditCategory/>} />} />
           <Route path='/admin/products' element={<AdminRoute element={<AdminProductPage/>} />} />
@@ -73,9 +71,22 @@ function App() {
           <Route path='/admin/edit-product/:productId' element={<AdminRoute element={<EditProductPage/>} />} />
           <Route path='/admin/materials' element={<AdminRoute element={<AdminMaterialPage/>} />} />
           <Route path='/admin/add-material' element={<AdminRoute element={<AddMaterialPage/>} />} />
-          <Route path='/admin/edit-material/:materialId' element={<AdminRoute element={<EditMaterialPage/>} />} />
+          <Route path='/admin/edit-material/:materialId' element={<AdminRoute element={<EditMaterialPage/>} />} />*/}
           
+          {/* INVENTORY MANAGER & ADMIN ROUTES */}
+          <Route path='/admin/add-product' element={<AdminOrInventoryManagerRoute element={<AddProductPage />} />} />
+          <Route path='/admin/edit-product/:productId' element={<AdminOrInventoryManagerRoute element={<EditProductPage />} />} />
+          <Route path='/admin/products' element={<AdminOrInventoryManagerRoute element={<AdminProductPage />} />} />
+          <Route path='/admin/add-category' element={<AdminOrInventoryManagerRoute element={<AddCategory />} />} />
+          <Route path='/admin/categories' element={<AdminOrInventoryManagerRoute element={<AdminCategoryPage />} />} />
+          <Route path='/admin/edit-category/:categoryId' element={<AdminOrInventoryManagerRoute element={<EditCategory />} />} />
+          <Route path='/admin/materials' element={<AdminOrInventoryManagerRoute element={<AdminMaterialPage />} />} />
+          <Route path='/admin/add-material' element={<AdminOrInventoryManagerRoute element={<AddMaterialPage />} />} />
+          <Route path='/admin/edit-material/:materialId' element={<AdminOrInventoryManagerRoute element={<EditMaterialPage />} />} />
 
+          {/* DELIVERY PERSON & ADMIN ROUTES 
+          <Route path='/admin/orders' element={<AdminOrDeliveryPersonRoute element={<AdminOrdersPage />} />} />
+          <Route path='/admin/order-details/:itemId' element={<AdminOrDeliveryPersonRoute element={<AdminOrderDetailsPage />} />} />*/}
 
           <Route path='/admin/orders' element={<AdminRoute element={<AdminOrdersPage/>} />} />
           <Route path='/admin/order-details/:itemId' element={<AdminRoute element={<AdminOrderDetailsPage/>} />} />
@@ -83,7 +94,7 @@ function App() {
 
           {/* INVENTORY MANAGER ROUTES */}
           <Route path='/manager' element={<InventoryManagerRoute element={<InventoryManagerPage/>} />} />
-          <Route path='/manager/products' element={<InventoryManagerRoute element={<AdminProductPage />} />} />
+          {/*<Route path='/manager/products' element={<InventoryManagerRoute element={<AdminProductPage />} />} />
           <Route path='/manager/add-product' element={<InventoryManagerRoute element={<AddProductPage />} />} />
           <Route path='/manager/edit-product/:productId' element={<InventoryManagerRoute element={<EditProductPage />} />} />
           <Route path='/manager/materials' element={<InventoryManagerRoute element={<AdminMaterialPage />} />} />
@@ -91,10 +102,10 @@ function App() {
           <Route path='/manager/edit-material/:materialId' element={<InventoryManagerRoute element={<EditMaterialPage />} />} />
           <Route path='/manager/categories' element={<InventoryManagerRoute element={<AdminCategoryPage />} />} />
           <Route path='/manager/add-category' element={<InventoryManagerRoute element={<AddCategory />} />} />
-          <Route path='/manager/edit-category/:categoryId' element={<InventoryManagerRoute element={<EditCategory />} />} />
+          <Route path='/manager/edit-category/:categoryId' element={<InventoryManagerRoute element={<EditCategory />} />} />*/}
 
           {/* DELIVERY PERSON ROUTES */}
-          <Route path='/delivery' element={<DeliveryPersonPage element={<DeliveryPersonPage/>} />} />
+          <Route path='/delivery' element={<DeliveryPersonRoute element={<DeliveryPersonPage/>} />} />
           <Route path='/delivery/orders' element={<DeliveryPersonRoute element={<AdminOrdersPage />} />} />
           <Route path='/delivery/order-details/:itemId' element={<DeliveryPersonRoute element={<AdminOrderDetailsPage />} />} />
 
