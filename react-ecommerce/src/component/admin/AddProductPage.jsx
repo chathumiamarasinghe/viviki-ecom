@@ -15,6 +15,14 @@ const AddProductPage = () => {
 
     const navigate = useNavigate();
 
+    // 🔐 Role check to restrict unauthorized access
+    useEffect(() => {
+        if (!ApiService.isAdminOrInventoryManager()) {
+            navigate("/unauthorized"); // Redirect if not allowed
+        }
+    }, [navigate]);
+
+    // ✅ Load categories
     useEffect(() => {
         ApiService.getAllCategory().then((res) => setCategories(res.categoryList));
     }, []);
@@ -52,16 +60,16 @@ const AddProductPage = () => {
             <form onSubmit={handleSubmit} className="product-form">
                 <h2>Add Product</h2>
                 {message && <div className="message">{message}</div>}
-                
+
                 <input type="file" onChange={handleImage} />
-                
+
                 <select value={categoryId} onChange={(e) => setCategoryId(e.target.value)}>
                     <option value="">Select Category</option>
                     {categories.map((cat) => (
                         <option value={cat.id} key={cat.id}>{cat.name}</option>
                     ))}
                 </select>
-                
+
                 <input 
                     type="text" 
                     placeholder="Product name"
