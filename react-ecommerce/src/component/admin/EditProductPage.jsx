@@ -11,10 +11,16 @@ const EditProductPage = () => {
     const [name, setName] = useState('');
     const [description, setDescription] = useState('');
     const [price, setPrice] = useState('');
-    const [quantity, setQuantity] = useState(''); // ✅ NEW
+    const [quantity, setQuantity] = useState(''); 
     const [imageUrl, setImageUrl] = useState(null);
     const [message, setMessage] = useState('');
     const navigate = useNavigate();
+
+    useEffect(() => {
+            if (!ApiService.isAdminOrInventoryManager()) {
+                navigate("/unauthorized"); // Redirect if not allowed
+            }
+        }, [navigate]);
 
     useEffect(() => {
         ApiService.getAllCategory().then((res) => setCategories(res.categoryList));
@@ -24,7 +30,7 @@ const EditProductPage = () => {
                 setName(response.product.name);
                 setDescription(response.product.description);
                 setPrice(response.product.price);
-                setQuantity(response.product.quantity); // ✅ NEW
+                setQuantity(response.product.quantity);
                 setCategoryId(response.product.categoryId);
                 setImageUrl(response.product.imageUrl);
             });
@@ -48,7 +54,7 @@ const EditProductPage = () => {
             formData.append('name', name);
             formData.append('description', description);
             formData.append('price', price);
-            formData.append('quantity', quantity); // ✅ NEW
+            formData.append('quantity', quantity);
 
             const response = await ApiService.updateProduct(formData);
             if (response.status === 200) {
