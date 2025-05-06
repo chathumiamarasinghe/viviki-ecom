@@ -2,13 +2,12 @@ package com.second.Eccormerce.controller;
 
 
 import com.second.Eccormerce.dto.Response;
+import com.second.Eccormerce.dto.UserDto;
 import com.second.Eccormerce.service.interf.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/user")
@@ -28,4 +27,17 @@ public class UserController {
     public ResponseEntity<Response> getUserInfoAndOrderHistory(){
         return ResponseEntity.ok(userService.getUserInfoAndOrderHistory());
     }
+
+    @PostMapping("/add-user")
+    @PreAuthorize("hasAuthority('ADMIN')")
+    public ResponseEntity<Response> addUserByAdmin(@RequestBody UserDto userDto) {
+        return ResponseEntity.ok(userService.registerUser(userDto));
+    }
+
+    @DeleteMapping("/{userId}")
+    @PreAuthorize("hasAuthority('ADMIN')")
+    public Response deleteUser(@PathVariable Long userId) {
+        return userService.deleteUser(userId);
+    }
+
 }

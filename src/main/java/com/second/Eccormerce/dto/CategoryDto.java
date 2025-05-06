@@ -1,5 +1,6 @@
 package com.second.Eccormerce.dto;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.AllArgsConstructor;
@@ -17,5 +18,7 @@ public class CategoryDto {
 
     private Long id;
     private String  name;
+
+    @JsonIgnore
     private List<ProductDto> productList;
 }

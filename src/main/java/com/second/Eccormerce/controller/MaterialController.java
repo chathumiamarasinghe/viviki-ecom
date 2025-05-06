@@ -1,6 +1,7 @@
 package com.second.Eccormerce.controller;
 
 
+import com.second.Eccormerce.dto.MaterialDto;
 import com.second.Eccormerce.dto.Response;
 import com.second.Eccormerce.exception.InvalidCredentialsException;
 import com.second.Eccormerce.service.interf.MaterialService;
@@ -18,7 +19,7 @@ public class MaterialController {
 
 
     @PostMapping("/create")
-    @PreAuthorize("hasAuthority('ADMIN')")
+    @PreAuthorize("hasAuthority('ADMIN') or hasAuthority('INVENTORY_MANAGER')")
     public ResponseEntity<Response> createMaterial(
 
             @RequestParam String name,
@@ -33,18 +34,18 @@ public class MaterialController {
 
 
     @PutMapping("/update")
-    @PreAuthorize("hasAuthority('ADMIN')")
-    public ResponseEntity<Response> updateMaterial(
-            @RequestParam Long materialId,
-            @RequestParam(required = false)  String name,
-            @RequestParam(required = false)  String description,
-            @RequestParam(required = false)  Integer quantity
-    ){
-        return ResponseEntity.ok(materialService.updateMaterial(materialId, name, description, quantity));
+    @PreAuthorize("hasAuthority('ADMIN') or hasAuthority('INVENTORY_MANAGER')")
+    public ResponseEntity<Response> updateMaterial(@RequestBody MaterialDto materialDto) {
+        return ResponseEntity.ok(materialService.updateMaterial(
+                materialDto.getId(),
+                materialDto.getName(),
+                materialDto.getDescription(),
+                materialDto.getQuantity()
+        ));
     }
 
     @DeleteMapping("/delete/{materialId}")
-    @PreAuthorize("hasAuthority('ADMIN')")
+    @PreAuthorize("hasAuthority('ADMIN') or hasAuthority('INVENTORY_MANAGER')")
     public ResponseEntity<Response> deleteMaterial(@PathVariable Long materialId){
         return ResponseEntity.ok(materialService.deleteMaterial(materialId));
 

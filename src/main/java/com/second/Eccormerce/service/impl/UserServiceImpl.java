@@ -37,12 +37,38 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public Response registerUser(UserDto registrationRequest) {
-        UserRole role = UserRole.USER;
-
-        if (registrationRequest.getRole() != null && registrationRequest.getRole().equalsIgnoreCase("admin")) {
-            role = UserRole.ADMIN;
+        // Check if the admin is attempting to add a user
+        User loggedInUser = getLoginUser();
+        if (loggedInUser.getRole() != UserRole.ADMIN) {
+            return Response.builder()
+                    .status(403)
+                    .message("Only admin can add users")
+                    .build();
         }
 
+        UserRole role = UserRole.USER;
+
+        // Validate the role in the registration request and assign the correct role
+        if (registrationRequest.getRole() != null) {
+            switch (registrationRequest.getRole().toUpperCase()) {
+                case "ADMIN":
+                    role = UserRole.ADMIN;
+                    break;
+                case "INVENTORY_MANAGER":
+                    role = UserRole.INVENTORY_MANAGER;
+                    break;
+                case "DELIVERY_PERSON":
+                    role = UserRole.DELIVERY_PERSON;
+                    break;
+                default:
+                    return Response.builder()
+                            .status(400)
+                            .message("Invalid role specified")
+                            .build();
+            }
+        }
+
+        // Create the user and save it to the database
         User user = User.builder()
                 .name(registrationRequest.getName())
                 .email(registrationRequest.getEmail())
@@ -52,8 +78,8 @@ public class UserServiceImpl implements UserService {
                 .build();
 
         User savedUser = userRepo.save(user);
-        System.out.println(savedUser);
 
+        // Map saved user to DTO and return a response
         UserDto userDto = entityDtoMapper.mapUserToDtoBasic(savedUser);
         return Response.builder()
                 .status(200)
@@ -61,6 +87,7 @@ public class UserServiceImpl implements UserService {
                 .user(userDto)
                 .build();
     }
+
 
 
 
@@ -115,4 +142,31 @@ public class UserServiceImpl implements UserService {
                 .user(userDto)
                 .build();
     }
+
+    @Override
+    public Response deleteUser(Long userId) {
+        // Check if the logged-in user is an admin
+        User loggedInUser = getLoginUser();
+        if (loggedInUser.getRole() != UserRole.ADMIN) {
+            return Response.builder()
+                    .status(403)
+                    .message("Only admin can delete users")
+                    .build();
+        }
+
+        // Find the user to delete
+        User userToDelete = userRepo.findById(userId)
+                .orElseThrow(() -> new NotFoundException("User not found"));
+
+        // Delete the user
+        userRepo.delete(userToDelete);
+
+        return Response.builder()
+                .status(200)
+                .message("User successfully deleted")
+                .build();
+    }
+
+
+
 }
