@@ -23,7 +23,7 @@ export default class ApiService {
         const response = await axios.post(`${this.BASE_URL}/auth/login`, loginDetails);
         const data = response.data;
     
-        // Assuming the response contains token and role
+        
         if (data.token && data.role) {
             localStorage.setItem("token", data.token);
             localStorage.setItem("role", data.role); 
@@ -35,6 +35,27 @@ export default class ApiService {
 
     static async getLoggedInUserInfo() {
         const response = await axios.get(`${this.BASE_URL}/user/my-info`, {
+            headers: this.getHeader()
+        });
+        return response.data;
+    }
+
+    static async getAllUsers() {
+        const response = await axios.get(`${this.BASE_URL}/user/get-all`, {
+            headers: this.getHeader()
+        });
+        return response.data;
+    }
+
+    static async addUser(userData) {
+        const response = await axios.post(`${this.BASE_URL}/user/add-user`, userData, {
+            headers: this.getHeader()
+        });
+        return response.data;
+    }
+    
+    static async deleteUser(userId) {
+        const response = await axios.delete(`${this.BASE_URL}/user/${userId}`, {
             headers: this.getHeader()
         });
         return response.data;
@@ -232,7 +253,6 @@ export default class ApiService {
         return response.data;
     }
 
-    // Update Material
     static async updateMaterial(body) {
         const response = await axios.put(`${this.BASE_URL}/material/update`, body, {
             headers: this.getHeader()
@@ -267,7 +287,7 @@ export default class ApiService {
 
     /** REVIEW ENDPOINTS */
 
-// Create a new review
+
 static async createReview(review) {
     const response = await axios.post(`${this.BASE_URL}/api/reviews`, review, {
         headers: this.getHeader()
@@ -275,7 +295,7 @@ static async createReview(review) {
     return response.data;
 }
 
-// Get all reviews by product ID
+
 static async getReviewsByProductId(productId) {
     const response = await axios.get(`${this.BASE_URL}/api/reviews/product/${productId}`);
     return response.data;
@@ -295,6 +315,16 @@ static async downloadOrderItemsReport() {
     const response = await axios.get(`${this.BASE_URL}/api/report/productlist`, {
         headers: this.getHeader(),
         responseType: 'blob'   
+    });
+    return response.data;
+}
+
+static async createPaymentIntent(amount, currency = 'usd') {
+    const response = await axios.post(`${this.BASE_URL}/api/payment/create-payment-intent`, {
+        amount,
+        currency
+    }, {
+        headers: this.getHeader()
     });
     return response.data;
 }
