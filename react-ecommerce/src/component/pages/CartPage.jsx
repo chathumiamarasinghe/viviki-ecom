@@ -60,6 +60,10 @@ const CartPage = () => {
                 dispatch({ type: 'CLEAR_CART' })
             }
 
+            navigate('/checkout', {
+                state: { totalAmount: totalPrice }
+            });
+
         } catch (error) {
             setMessage(error.response?.data?.message || error.message || 'Failed to place an order');
             setTimeout(() => {
