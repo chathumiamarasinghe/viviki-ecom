@@ -1,0 +1,16 @@
+.checkout-card {
+    max-width: 400px;
+    width: 100%;
+    border-radius: 16px;
+    background-color: #fff;
+}
+
+.card-element-wrapper {
+    background: #f8f9fa;
+    transition: border-color 0.3s ease;
+}
+
+.card-element-wrapper:focus-within {
+    border-color: #dff210;
+    box-shadow: 0 0 0 0.2rem rgba(246, 132, 2, 0.25);
+}
