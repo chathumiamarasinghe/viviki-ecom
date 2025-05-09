@@ -18,7 +18,7 @@ const EditProductPage = () => {
 
     useEffect(() => {
             if (!ApiService.isAdminOrInventoryManager()) {
-                navigate("/unauthorized"); // Redirect if not allowed
+                navigate("/unauthorized");
             }
         }, [navigate]);
 
@@ -110,7 +110,7 @@ const EditProductPage = () => {
                 placeholder="Quantity"
                 value={quantity}
                 onChange={(e) => setQuantity(e.target.value)}
-            /> {/* ✅ NEW */}
+            />
 
             <button type="submit">Update</button>
         </form>
