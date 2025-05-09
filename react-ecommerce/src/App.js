@@ -25,12 +25,15 @@ import AddProductPage from './component/admin/AddProductPage';
 import EditProductPage from './component/admin/EditProductPage';
 import AdminOrdersPage from './component/admin/AdminOrderPage';
 import AdminOrderDetailsPage from './component/admin/AdminOrderDetailsPage';
-import CheckoutButton from './component/pages/CheckoutButton'; // Your CheckoutButton component
+import CheckoutButton from './component/pages/CheckoutButton';
 import CategoryChart from './component/admin/CategoryChart';
 import OrderChart from './component/admin/OrderChart';
 import AdminMaterialPage from './component/admin/AdminMaterialPage';
 import AddMaterialPage from './component/admin/AddMaterialPage';
 import EditMaterialPage from './component/admin/EditMaterialPage';
+import AdminMaterialTypePage from './component/admin/AdminMaterialTypePage';
+import AddMaterialTypePage from './component/admin/AddMaterialType';
+import EditMaterialTypePage from './component/admin/EditMaterialType';
 import CategorySection from './component/pages/CategorySection';
 import DeliveryPersonPage from './component/deliveryperson/DeliveryPerson';
 import InventoryManagerPage from './component/inventorymanager/InventoryManager';
@@ -45,7 +48,7 @@ function App() {
     <BrowserRouter>
       <CartProvider>
         <Navbar/>
-        <Elements stripe={stripePromise}> {/* Wrap your CheckoutButton with Elements */}
+        <Elements stripe={stripePromise}>
           <Routes>
             {/* OUR ROUTES */}
             <Route exact path='/' element={<Home/>}/>
@@ -56,7 +59,7 @@ function App() {
             <Route path='/cart' element={<CartPage/>}/>
             <Route path='/register' element={<RegisterPage/>}/>
             <Route path='/login' element={<LoginPage/>}/>
-            <Route path='/checkout' element={<CheckoutButton/>}/> {/* CheckoutButton inside Elements */}
+            <Route path='/checkout' element={<CheckoutButton/>}/> 
             <Route path='/CategoryChart' element={<CategoryChart/>}/>
             <Route path='/OrderChart' element={<OrderChart/>}/>
             <Route path='/category-section' element={<CategorySection />} />
@@ -80,6 +83,9 @@ function App() {
             <Route path='/admin/materials' element={<AdminMaterialPage />} />
             <Route path='/admin/add-material' element={<AddMaterialPage />} />
             <Route path='/admin/edit-material/:materialId' element={<EditMaterialPage />} />
+            <Route path='/admin/materialTypes' element={<AdminMaterialTypePage />} />
+            <Route path='/admin/add-materialType' element={<AddMaterialTypePage />} />
+            <Route path='/admin/edit-materialType/:materialTypeId' element={<EditMaterialTypePage />} />
 
             <Route path='/admin/orders' element={<AdminOrdersPage/>} />
             <Route path='/admin/order-details/:itemId' element={<AdminOrderDetailsPage/>} />
@@ -92,7 +98,7 @@ function App() {
             <Route path='/delivery/orders' element={<AdminOrdersPage />} />
             <Route path='/delivery/order-details/:itemId' element={<AdminOrderDetailsPage />} />
           </Routes>
-        </Elements> {/* End of Elements provider */}
+        </Elements> 
         <Footer/>
       </CartProvider>
     </BrowserRouter>
