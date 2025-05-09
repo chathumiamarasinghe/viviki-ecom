@@ -3,6 +3,12 @@ import { CardElement, useStripe, useElements } from "@stripe/react-stripe-js";
 import { useLocation, useNavigate } from "react-router-dom";
 import ApiService from "../../service/ApiService";
 import '../../style/checkout.css';
+import Visa from "../../assets/common/visa.png";
+import Paypal from "../../assets/common/paypal.png";
+import Mastercard from "../../assets/common/mastercard.png";
+import Amex from "../../assets/common/amex.png";
+import { useCart } from "../context/CartContext";
+
 
 const CheckoutButton = () => {
     const stripe = useStripe();
@@ -11,6 +17,7 @@ const CheckoutButton = () => {
     const navigate = useNavigate();
     const [clientSecret, setClientSecret] = useState("");
     const [amount, setAmount] = useState(0);
+    const { dispatch } = useCart();
 
     useEffect(() => {
         const total = location.state?.totalAmount || 0;
@@ -39,31 +46,59 @@ const CheckoutButton = () => {
             console.error("Payment error:", error.message);
             alert("Payment failed: " + error.message);
         } else if (paymentIntent && paymentIntent.status === "succeeded") {
+          dispatch({ type: 'CLEAR_CART' });
             alert("Payment successful!");
             navigate("/");
         }
     };
 
     return (
-        <div className="container d-flex justify-content-center align-items-center vh-100">
-            <div className="card shadow-lg p-4 checkout-card">
-                <h2 className="text-center mb-4">Checkout</h2>
-                <h5 className="text-muted mb-4 text-center">Total: Rs. {amount.toFixed(2)}</h5>
-                <form onSubmit={handleSubmit}>
-                    <div className="form-group mb-4">
-                        <label className="mb-2">Card Information</label>
-                        <div className="card-element-wrapper border rounded p-3">
+        <div className="container vh-100 d-flex justify-content-center align-items-center">
+            <div className="row checkout-container shadow-lg p-0 rounded">
+                <div className="col-md-6 p-4 payment-methods">
+                    <h5 className="mb-3">How would you like to pay?</h5>
+                    <div className="payment-icons mb-4">
+                        <img src={Visa} alt="Visa" />
+                        <img src={Mastercard} alt="MasterCard" />
+                        <img src={Paypal} alt="PayPal" />
+                        <img src={Amex} alt="Amex" />
+                    </div>
+                    <form onSubmit={handleSubmit}>
+                        <label className="form-label mb-2">Card Information</label>
+                        <div className="card-element-wrapper border rounded p-3 mb-4">
                             <CardElement />
                         </div>
+                        <button 
+                            type="submit" 
+                            className="btn btn-success w-100" 
+                            disabled={!stripe || !clientSecret}
+                        >
+                            Continue to secure payment
+                        </button>
+                    </form>
+                </div>
+                <div className="col-md-6 p-4 bg-light border-start">
+                    <h5>Order Summary</h5>
+                    <div className="summary-item d-flex justify-content-between mt-3">
+                        <span>Items total:</span><span>Rs. {amount.toFixed(2)}</span>
+                    </div>
+                    <div className="summary-item d-flex justify-content-between">
+                        <span>Shipping:</span><span>Free</span>
+                    </div>
+                    <div className="summary-item d-flex justify-content-between">
+                        <span>Taxes:</span><span>Rs. 0.00</span>
+                    </div>
+                    <hr />
+                    <div className="summary-total d-flex justify-content-between fw-bold">
+                        <span>Total:</span><span>Rs. {amount.toFixed(2)}</span>
                     </div>
                     <button 
-                        type="submit" 
-                        className="btn btn-primary w-100" 
-                        disabled={!stripe || !clientSecret}
-                    >
-                        Pay Rs. {amount.toFixed(2)}
+                      className="btn btn-outline-danger w-100 mt-3" 
+                        onClick={() => navigate("/cart")}
+                      >
+                      Cancel payment
                     </button>
-                </form>
+                </div>
             </div>
         </div>
     );

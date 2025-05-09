@@ -7,15 +7,26 @@ const AddMaterialPage = () => {
     const [name, setName] = useState('');
     const [description, setDescription] = useState('');
     const [quantity, setQuantity] = useState('');
+    const [materialTypes, setMaterialTypes] = useState([]);
+    const [selectedMaterialTypeId, setSelectedMaterialTypeId] = useState('');
     const [message, setMessage] = useState('');
 
     const navigate = useNavigate();
 
     useEffect(() => {
-            if (!ApiService.isAdminOrInventoryManager()) {
-                navigate("/unauthorized");
-            }
-        }, [navigate]);
+        if (!ApiService.isAdminOrInventoryManager()) {
+            navigate("/unauthorized");
+        }
+    
+        ApiService.getAllMaterialTypes()
+            .then((res) => {
+                console.log("Material types:", res.materialTypeList);
+                setMaterialTypes(res.materialTypeList);
+            })
+            .catch((error) => {
+                console.error("Error fetching material types:", error);
+            });
+    }, [navigate]);
 
     const handleSubmit = async (e) => {
         e.preventDefault();
@@ -23,7 +34,10 @@ const AddMaterialPage = () => {
             const materialData = {
                 name,
                 description,
-                quantity
+                quantity: parseInt(quantity),
+                materialType: {
+                    id: parseInt(selectedMaterialTypeId)
+                }
             };
 
             const response = await ApiService.addMaterial(materialData);
@@ -31,7 +45,7 @@ const AddMaterialPage = () => {
                 setMessage("Material added successfully!");
                 setTimeout(() => {
                     setMessage('');
-                    navigate('/admin/materials'); // 👈 Adjust this route if needed
+                    navigate('/admin/materials');
                 }, 3000);
             }
         } catch (error) {
@@ -44,6 +58,19 @@ const AddMaterialPage = () => {
             <form onSubmit={handleSubmit} className="product-form">
                 <h2>Add Material</h2>
                 {message && <div className="message">{message}</div>}
+
+                <select
+                    value={selectedMaterialTypeId}
+                    onChange={(e) => setSelectedMaterialTypeId(e.target.value)}
+                    required
+                >
+                    <option value="">Select Material Type</option>
+                    {materialTypes.map((type) => (
+                        <option key={type.id} value={type.id}>
+                            {type.name}
+                        </option>
+                    ))}
+                </select>
 
                 <input 
                     type="text" 

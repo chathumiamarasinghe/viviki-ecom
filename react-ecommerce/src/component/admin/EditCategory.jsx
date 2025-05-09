@@ -11,7 +11,7 @@ const EditCategory = () => {
 
     useEffect(() => {
             if (!ApiService.isAdminOrInventoryManager()) {
-                navigate("/unauthorized"); // Redirect if not allowed
+                navigate("/unauthorized"); 
             }
         }, [navigate]);
 

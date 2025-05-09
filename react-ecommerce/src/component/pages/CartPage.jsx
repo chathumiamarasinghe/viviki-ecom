@@ -27,7 +27,6 @@ const CartPage = () => {
     const totalPrice = cart.reduce((total, item) => total + item.price * item.quantity, 0);
 
 
-
     const handleCheckout = async () => {
         if (!ApiService.isAuthenticated()) {
             setMessage("You need to login first before you can place an order");
@@ -56,9 +55,6 @@ const CartPage = () => {
                 setMessage('')
             }, 5000);
 
-            if (response.status === 200) {
-                dispatch({ type: 'CLEAR_CART' })
-            }
 
             navigate('/checkout', {
                 state: { totalAmount: totalPrice }

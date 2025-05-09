@@ -1,16 +1,34 @@
-.checkout-card {
-    max-width: 400px;
-    width: 100%;
-    border-radius: 16px;
-    background-color: #fff;
+.checkout-container {
+    width: 900px;
+    background-color: #ffffff;
+    border-radius: 12px;
+    overflow: hidden;
+}
+
+.payment-methods {
+    background-color: #f9f9f9;
+}
+
+.payment-icons img {
+    height: 32px;
+    margin-right: 12px;
+    border: 1px solid #ccc;
+    padding: 4px;
+    border-radius: 6px;
+    background-color: white;
 }
 
 .card-element-wrapper {
-    background: #f8f9fa;
+    background: #f1f1f1;
     transition: border-color 0.3s ease;
 }
 
 .card-element-wrapper:focus-within {
-    border-color: #dff210;
-    box-shadow: 0 0 0 0.2rem rgba(246, 132, 2, 0.25);
+    border-color: #28a745;
+    box-shadow: 0 0 0 0.2rem rgba(40, 167, 69, 0.25);
+}
+
+.summary-item,
+.summary-total {
+    font-size: 16px;
 }

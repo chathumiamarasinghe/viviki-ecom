@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import '../../style/adminMaterial.css'; // Create this similar to adminCategory.css
+import '../../style/adminMaterial.css';
 import ApiService from "../../service/ApiService";
 
 const AdminMaterialPage = () => {

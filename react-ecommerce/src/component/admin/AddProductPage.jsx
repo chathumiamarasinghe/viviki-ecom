@@ -15,14 +15,14 @@ const AddProductPage = () => {
 
     const navigate = useNavigate();
 
-    // 🔐 Role check to restrict unauthorized access
+   
     useEffect(() => {
         if (!ApiService.isAdminOrInventoryManager()) {
-            navigate("/unauthorized"); // Redirect if not allowed
+            navigate("/unauthorized"); 
         }
     }, [navigate]);
 
-    // ✅ Load categories
+    
     useEffect(() => {
         ApiService.getAllCategory().then((res) => setCategories(res.categoryList));
     }, []);

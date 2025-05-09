@@ -63,11 +63,11 @@ const AdminProductPage = () => {
         <div className="admin-product-page">
             <div className="admin-product-list">
                 <h2>Products</h2>
-                <button className="btn-primary" onClick={() => navigate('/admin/add-product')}>
+                <button className="btn-outline" onClick={() => navigate('/admin/add-product')}>
                     Add Product
                 </button>
                 {error && <p className="error-message">{error}</p>}
-                <button className="btn-primary" onClick={handleDownloadReport}>
+                <button className="btn-outline" onClick={handleDownloadReport}>
                       Download Product Report
                 </button>
 
