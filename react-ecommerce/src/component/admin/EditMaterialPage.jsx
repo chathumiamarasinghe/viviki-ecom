@@ -8,27 +8,43 @@ const EditMaterialPage = () => {
     const [name, setName] = useState('');
     const [description, setDescription] = useState('');
     const [quantity, setQuantity] = useState('');
+    const [materialTypes, setMaterialTypes] = useState([]);
+    const [materialTypeId, setMaterialTypeId] = useState('');
     const [message, setMessage] = useState('');
     const navigate = useNavigate();
 
     useEffect(() => {
-                if (!ApiService.isAdminOrInventoryManager()) {
-                    navigate("/unauthorized");
-                }
-            }, [navigate]);
+        if (!ApiService.isAdminOrInventoryManager()) {
+            navigate("/unauthorized");
+        }
+    }, [navigate]);
 
     useEffect(() => {
-        if (materialId) {
-            ApiService.getMaterialById(materialId).then((response) => {
-                const material = response.material;
-                setName(material.name);
-                setDescription(material.description);
-                setQuantity(material.quantity);
-            }).catch((error) => {
-                setMessage(error.response?.data?.message || error.message || 'Unable to fetch material');
+        ApiService.getAllMaterialTypes()
+            .then((response) => {
+                console.log("Edit page material types:", response.materialTypeList);
+                setMaterialTypes(response.materialTypeList || []);
+            })
+            .catch((error) => {
+                console.error("Error fetching material types:", error);
+                setMaterialTypes([]); 
             });
+    
+        if (materialId) {
+            ApiService.getMaterialById(materialId)
+                .then((response) => {
+                    const material = response.material;
+                    setName(material.name);
+                    setDescription(material.description);
+                    setQuantity(material.quantity);
+                    setMaterialTypeId(material.materialType?.id || '');
+                })
+                .catch((error) => {
+                    setMessage(error.response?.data?.message || error.message || 'Unable to fetch material');
+                });
         }
     }, [materialId]);
+    
 
     const handleSubmit = async (e) => {
         e.preventDefault();
@@ -37,9 +53,12 @@ const EditMaterialPage = () => {
                 id: materialId,
                 name,
                 description,
-                quantity
+                quantity,
+                materialType: {
+                    id: materialTypeId 
+                }
             };
-
+    
             const response = await ApiService.updateMaterial(materialData);
             if (response.status === 200) {
                 setMessage("Material updated successfully!");
@@ -52,11 +71,28 @@ const EditMaterialPage = () => {
             setMessage(error.response?.data?.message || error.message || 'Unable to update material');
         }
     };
+    
 
     return (
         <form onSubmit={handleSubmit} className="product-form">
             <h2>Edit Material</h2>
             {message && <div className="message">{message}</div>}
+
+            <select
+    value={materialTypeId}
+    onChange={(e) => setMaterialTypeId(e.target.value)}
+    required
+>
+    <option value="">Select Material Type</option>
+    {materialTypes.map((type) => (
+        <option key={type.id} value={type.id}>
+            {type.name}
+        </option>
+    ))}
+</select>
+
+
+
 
             <input
                 type="text"
