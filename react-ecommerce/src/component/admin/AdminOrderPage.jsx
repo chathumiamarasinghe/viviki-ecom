@@ -86,33 +86,62 @@ const AdminOrdersPage = () => {
         }
     };
 
+    const downloadOrderReport = async () => {
+        try {
+            
+            const reportBlob = await ApiService.downloadOrderItemsReport();
+    
+            
+            const url = window.URL.createObjectURL(new Blob([reportBlob]));
+            const link = document.createElement('a');
+            link.href = url;
+            link.setAttribute('download', 'order_items_report.pdf'); 
+            document.body.appendChild(link);
+            link.click();
+            link.remove();
+        } catch (error) {
+            console.error("Error downloading the report", error);
+            alert("There was an error downloading the report. Please try again.");
+        }
+    };
+    
+
 
     return (
         <div className="admin-orders-page">
             <h2>Orders</h2>
             {error && <p className="error-message">{error}</p>}
+            
+            {/* Download Report Button */}
+            <div className="download-report-container">
+                <button 
+                    className="btn btn-outline-warning" 
+                    onClick={downloadOrderReport}>
+                    Download Order Report
+                </button>
+            </div>
+    
             <div className="filter-container">
                 <div className="statusFilter">
-                    <label >Filter By Status</label>
+                    <label>Filter By Status</label>
                     <select value={statusFilter} onChange={handleFilterChange}>
                         <option value="">All</option>
-                        {OrderStatus.map(status=>(
+                        {OrderStatus.map(status => (
                             <option key={status} value={status}>{status}</option>
                         ))}
                     </select>
                 </div>
                 <div className="searchStatus">
-                <label>Search By Status</label>
+                    <label>Search By Status</label>
                     <select value={searchStatus} onChange={handleSearchStatusChange}>
                         <option value="">All</option>
-                        {OrderStatus.map(status=>(
+                        {OrderStatus.map(status => (
                             <option key={status} value={status}>{status}</option>
                         ))}
                     </select>
-
                 </div>
             </div>
-
+    
             <table className="orders-table">
                 <thead>
                     <tr>
@@ -124,7 +153,7 @@ const AdminOrdersPage = () => {
                         <th>Actions</th>
                     </tr>
                 </thead>
-
+    
                 <tbody>
                     {filteredOrders.map(order => (
                         <tr key={order.id}>
@@ -134,24 +163,23 @@ const AdminOrdersPage = () => {
                             <td>Rs.{order.price.toFixed(2)}</td>
                             <td>{new Date(order.createdAt).toLocaleDateString()}</td>
                             <td>
-                                 <button className="btn btn-outline-warning" onClick={() => handleOrderDetails(order.id)}>
+                                <button className="btn btn-outline-warning" onClick={() => handleOrderDetails(order.id)}>
                                     Details
                                 </button>
                             </td>
                         </tr>
                     ))}
                 </tbody>
-
             </table>
-
+    
             {orders.length > 0 && <OrderChart orders={orders} />}
-
+    
             <Pagination
-            currentPage={currentPage}
-            totalPages={totalPages}
-            onPageChange={(page)=> setCurrentPage(page)}/>
+                currentPage={currentPage}
+                totalPages={totalPages}
+                onPageChange={(page) => setCurrentPage(page)} />
         </div>
-    )
+    );
 }
 
 export default AdminOrdersPage;
