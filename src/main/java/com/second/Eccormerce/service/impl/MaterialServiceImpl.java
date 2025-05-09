@@ -1,10 +1,14 @@
 package com.second.Eccormerce.service.impl;
 
 import com.second.Eccormerce.dto.MaterialDto;
+import com.second.Eccormerce.dto.ProductDto;
 import com.second.Eccormerce.dto.Response;
+import com.second.Eccormerce.entity.MaterialType;
 import com.second.Eccormerce.entity.Material;
+import com.second.Eccormerce.entity.Product;
 import com.second.Eccormerce.exception.NotFoundException;
 import com.second.Eccormerce.mapper.EntityDtoMapper;
+import com.second.Eccormerce.repository.MaterialTypeRepo;
 import com.second.Eccormerce.repository.MaterialRepo;
 import com.second.Eccormerce.service.interf.MaterialService;
 import lombok.RequiredArgsConstructor;
@@ -21,13 +25,16 @@ import java.util.stream.Collectors;
 public class MaterialServiceImpl implements MaterialService {
 
     private final MaterialRepo materialRepo;
+    private final MaterialTypeRepo materialTypeRepo;
     private final EntityDtoMapper entityDtoMapper;
 
     @Override
-    public Response createMaterial(String name, String description, Integer quantity) {
+    public Response createMaterial(Long materialTypeId, String name, String description, Integer quantity) {
+        MaterialType materialType = materialTypeRepo.findById(materialTypeId).orElseThrow(()-> new NotFoundException("Material Type not found"));
 
 
         Material material = new Material();
+        material.setMaterialType(materialType);
         material.setName(name);
         material.setDescription(description);
         material.setQuantity(quantity);
@@ -40,9 +47,16 @@ public class MaterialServiceImpl implements MaterialService {
     }
 
     @Override
-    public Response updateMaterial(Long materialId, String name, String description, Integer quantity) {
+    public Response updateMaterial(Long materialId, Long materialTypeId, String name, String description, Integer quantity) {
         Material material = materialRepo.findById(materialId).orElseThrow(()-> new NotFoundException("Material Not Found"));
 
+        MaterialType materialType = null;
+
+        if(materialTypeId != null ){
+            materialType = materialTypeRepo.findById(materialTypeId).orElseThrow(()-> new NotFoundException("Material Type not found"));
+        }
+
+        if (materialType != null) material.setMaterialType(materialType);
         if (name != null) material.setName(name);
         if (description != null) material.setDescription(description);
         if (quantity != null) material.setQuantity(quantity);
@@ -75,6 +89,23 @@ public class MaterialServiceImpl implements MaterialService {
                 .status(200)
                 .material(materialDto)
                 .build();
+    }
+
+    @Override
+    public Response getMaterialsByMaterialType(Long materialTypeId) {
+        List<Material> materials = materialRepo.findByMaterialTypeId(materialTypeId);
+        if(materials.isEmpty()){
+            throw new NotFoundException("No Materials found for this category");
+        }
+        List<MaterialDto> materialDtoList = materials.stream()
+                .map(entityDtoMapper::mapMaterialToDtoBasic)
+                .collect(Collectors.toList());
+
+        return Response.builder()
+                .status(200)
+                .materialList(materialDtoList)
+                .build();
+
     }
 
     @Override

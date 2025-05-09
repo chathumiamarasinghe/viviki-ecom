@@ -43,4 +43,7 @@ public class Response {
 
     private OrderDto order;
     private List<OrderDto> orderList;
+
+    private MaterialTypeDto materialType;
+    private List<MaterialTypeDto> materialTypeList;
 }

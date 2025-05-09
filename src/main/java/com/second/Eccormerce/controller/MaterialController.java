@@ -20,29 +20,38 @@ public class MaterialController {
 
     @PostMapping("/create")
     @PreAuthorize("hasAuthority('ADMIN') or hasAuthority('INVENTORY_MANAGER')")
-    public ResponseEntity<Response> createMaterial(
-
-            @RequestParam String name,
-            @RequestParam String description,
-            @RequestParam Integer quantity
-    ){
-        if (name.isEmpty() || description.isEmpty() || quantity == null){
+    public ResponseEntity<Response> createMaterial(@RequestBody MaterialDto materialDto){
+        if (materialDto.getMaterialType() == null || materialDto.getName().isEmpty() ||
+                materialDto.getDescription().isEmpty() || materialDto.getQuantity() == null){
             throw new InvalidCredentialsException("All Fields are Required");
         }
-        return ResponseEntity.ok(materialService.createMaterial(name, description, quantity));
-    }
 
-
-    @PutMapping("/update")
-    @PreAuthorize("hasAuthority('ADMIN') or hasAuthority('INVENTORY_MANAGER')")
-    public ResponseEntity<Response> updateMaterial(@RequestBody MaterialDto materialDto) {
-        return ResponseEntity.ok(materialService.updateMaterial(
-                materialDto.getId(),
+        return ResponseEntity.ok(materialService.createMaterial(
+                materialDto.getMaterialType().getId(),
                 materialDto.getName(),
                 materialDto.getDescription(),
                 materialDto.getQuantity()
         ));
     }
+
+
+
+    @PutMapping("/update")
+    @PreAuthorize("hasAuthority('ADMIN') or hasAuthority('INVENTORY_MANAGER')")
+    public ResponseEntity<Response> updateMaterial(@RequestBody MaterialDto materialDto) {
+        if (materialDto.getMaterialType() == null || materialDto.getMaterialType().getId() == null) {
+            throw new InvalidCredentialsException("Material Type is required");
+        }
+
+        return ResponseEntity.ok(materialService.updateMaterial(
+                materialDto.getId(),
+                materialDto.getMaterialType().getId(),
+                materialDto.getName(),
+                materialDto.getDescription(),
+                materialDto.getQuantity()
+        ));
+    }
+
 
     @DeleteMapping("/delete/{materialId}")
     @PreAuthorize("hasAuthority('ADMIN') or hasAuthority('INVENTORY_MANAGER')")
@@ -62,18 +71,17 @@ public class MaterialController {
         return ResponseEntity.ok(materialService.getAllMaterials());
     }
 
+    @GetMapping("/get-by-materialType-id/{materialTypeId}")
+    public ResponseEntity<Response> getMaterialsByMaterialType(@PathVariable Long materialTypeId){
+        return ResponseEntity.ok(materialService.getMaterialsByMaterialType(materialTypeId));
+    }
+
+
 
     @GetMapping("/search")
     public ResponseEntity<Response> searchForMaterial(@RequestParam String searchValue){
         return ResponseEntity.ok(materialService.searchMaterial(searchValue));
     }
-
-
-
-
-
-
-
 
 
 }

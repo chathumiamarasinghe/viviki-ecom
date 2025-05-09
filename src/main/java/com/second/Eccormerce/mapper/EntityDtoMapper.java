@@ -129,8 +129,13 @@ public class EntityDtoMapper {
 
     }
 
-
-
-
+    //MaterialType to DTO basic
+    public MaterialTypeDto mapMaterialTypeToDtoBasic(MaterialType materialType){
+        MaterialTypeDto materialTypeDto = new MaterialTypeDto();
+        materialTypeDto.setId(materialType.getId());
+        materialTypeDto.setName(materialType.getName());
+        materialTypeDto.setUnitType(materialType.getUnitType());
+        return materialTypeDto;
+    }
 
 }
