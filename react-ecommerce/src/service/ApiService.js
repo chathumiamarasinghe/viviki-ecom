@@ -247,11 +247,12 @@ export default class ApiService {
         const response = await axios.post(`${this.BASE_URL}/material/create`, formData, {
             headers: {
                 ...this.getHeader(),
-                "Content-Type": "multipart/form-data"
+                
             }
         });
         return response.data;
     }
+    
 
     static async updateMaterial(body) {
         const response = await axios.put(`${this.BASE_URL}/material/update`, body, {
@@ -311,7 +312,7 @@ static async downloadOrderItemsReport() {
 }
 
 // Product report
-static async downloadOrderItemsReport() {
+static async downloadproductItemsReport() {
     const response = await axios.get(`${this.BASE_URL}/api/report/productlist`, {
         headers: this.getHeader(),
         responseType: 'blob'   
@@ -326,6 +327,38 @@ static async createPaymentIntent(amount, currency = 'usd') {
     }, {
         headers: this.getHeader()
     });
+    return response.data;
+}
+
+/**MATERIALTYPE */
+static async createMaterialType(body) {
+    const response = await axios.post(`${this.BASE_URL}/materialType/create`, body, {
+        headers: this.getHeader()
+    })
+    return response.data;
+}
+
+static async getAllMaterialTypes() {
+    const response = await axios.get(`${this.BASE_URL}/materialType/get-all`)
+    return response.data;
+}
+
+static async getMaterialTypeById(materialTypeId) {
+    const response = await axios.get(`${this.BASE_URL}/materialType/get-materialType-by-id/${materialTypeId}`)
+    return response.data;
+}
+
+static async updateMaterialType(materialTypeId, body) {
+    const response = await axios.put(`${this.BASE_URL}/materialType/update/${materialTypeId}`, body, {
+        headers: this.getHeader()
+    })
+    return response.data;
+}
+
+static async deleteMaterialType(materialTypeId) {
+    const response = await axios.delete(`${this.BASE_URL}/materialType/delete/${materialTypeId}`, {
+        headers: this.getHeader()
+    })
     return response.data;
 }
 
