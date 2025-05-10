@@ -45,7 +45,7 @@ const AdminProductPage = () => {
 
     const handleDownloadReport = async () => {
             try {
-                const pdfBlob = await ApiService.downloadOrderItemsReport();
+                const pdfBlob = await ApiService.downloadproductItemsReport();
         
                 const url = window.URL.createObjectURL(new Blob([pdfBlob], { type: 'application/pdf' }));
                 const link = document.createElement('a');

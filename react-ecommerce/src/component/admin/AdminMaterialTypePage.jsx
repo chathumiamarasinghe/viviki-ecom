@@ -49,6 +49,7 @@ const AdminMaterialTypePage = () => {
                         <tr>
                             <th>ID</th>
                             <th>Type Name</th>
+                            <th>Unit Type</th>
                             <th>Actions</th>
                         </tr>
                     </thead>
@@ -57,6 +58,7 @@ const AdminMaterialTypePage = () => {
                             <tr key={type.id}>
                                 <td>{type.id}</td>
                                 <td>{type.name}</td>
+                                <td>{type.unitType}</td>
                                 <td>
                                     <button className="outline-btn edit-btn" onClick={() => handleEdit(type.id)}>Edit</button>
                                     <button className="outline-btn delete-btn" onClick={() => handleDelete(type.id)}>Delete</button>

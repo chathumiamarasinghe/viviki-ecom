@@ -7,50 +7,66 @@ const AdminUserPage = () => {
     const [loading, setLoading] = useState(true);
     const navigate = useNavigate();
 
-    // Define the fetchUsers function so it's accessible within the component
+    
     const fetchUsers = async () => {
         try {
             const res = await ApiService.getAllUsers();
-            console.log("Fetched users response:", res); // Log the entire response for debugging
+            console.log("Fetched users response:", res); 
     
-            // Check if userList exists and is an array
+           
             if (res && res.userList && Array.isArray(res.userList)) {
-                console.log("User data:", res.userList); // Log the user data specifically
-                setUsers(res.userList); // Set users from response
+                console.log("User data:", res.userList); 
+                setUsers(res.userList); 
             } else {
                 console.error("No user data found in the response");
-                setUsers([]); // Set empty array if no users are returned
+                setUsers([]); 
             }
         } catch (error) {
             console.error("Failed to fetch users", error);
         } finally {
-            setLoading(false); // Stop loading once the data is fetched
+            setLoading(false); 
         }
     };
 
-    // Fetch users when the component mounts
+    
     useEffect(() => {
-        fetchUsers(); // Call the fetch function on mount
+        fetchUsers(); 
     }, []);
 
-    // Delete user and refresh the list
+    
     const handleDelete = async (userId) => {
         if (window.confirm("Are you sure you want to delete this user?")) {
             try {
                 await ApiService.deleteUser(userId);
-                fetchUsers(); // Refresh the user list after deletion
+                fetchUsers(); 
             } catch (error) {
                 console.error("Failed to delete user", error);
             }
         }
     };
 
-    // Navigate to add user page
+    
     const handleAddUserClick = () => {
         navigate('/admin/add-user'); 
     };
 
     if (loading) return <div>Loading...</div>;
+
+    const handleDownloadReport = async () => {
+                        try {
+                            const pdfBlob = await ApiService.downloaduserReport();
+                    
+                            const url = window.URL.createObjectURL(new Blob([pdfBlob], { type: 'application/pdf' }));
+                            const link = document.createElement('a');
+                            link.href = url;
+                            link.setAttribute('download', 'userlistReport.pdf'); 
+                            document.body.appendChild(link);
+                            link.click();
+                            link.parentNode.removeChild(link);
+                        } catch (error) {
+                            console.error("Failed to download report:", error);
+                        }
+                    }
 
     return (
         <div className="container mt-4">
@@ -58,6 +74,9 @@ const AdminUserPage = () => {
                 <h2>All Registered Users</h2>
                 <button className="btn btn-success" onClick={handleAddUserClick}>
                     Add User
+                </button>
+                <button className="btn-outline" onClick={handleDownloadReport}>
+                      Download User Report
                 </button>
             </div>
 

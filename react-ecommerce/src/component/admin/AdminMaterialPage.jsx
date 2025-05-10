@@ -36,12 +36,31 @@ const AdminMaterialPage = () => {
         }
     };
 
+    const handleDownloadReport = async () => {
+                try {
+                    const pdfBlob = await ApiService.downloadmaterialItemsReport();
+            
+                    const url = window.URL.createObjectURL(new Blob([pdfBlob], { type: 'application/pdf' }));
+                    const link = document.createElement('a');
+                    link.href = url;
+                    link.setAttribute('download', 'materiallistReport.pdf'); 
+                    document.body.appendChild(link);
+                    link.click();
+                    link.parentNode.removeChild(link);
+                } catch (error) {
+                    console.error("Failed to download report:", error);
+                }
+            }
+
     return (
         <div className="admin-material-page">
             <div className="admin-material-list">
                 <h2>Materials</h2>
                 <button className="add-btn" onClick={() => navigate('/admin/add-material')}>
                     + Add Material
+                </button>
+                <button className="btn-outline" onClick={handleDownloadReport}>
+                      Download Material Report
                 </button>
 
                 <table className="material-table">
