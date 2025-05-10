@@ -320,6 +320,33 @@ static async downloadproductItemsReport() {
     return response.data;
 }
 
+// Category report
+static async downloadcategoryItemsReport() {
+    const response = await axios.get(`${this.BASE_URL}/api/report/categorylist`, {
+        headers: this.getHeader(),
+        responseType: 'blob'   
+    });
+    return response.data;
+}
+
+// Material report
+static async downloadmaterialItemsReport() {
+    const response = await axios.get(`${this.BASE_URL}/api/report/materiallist`, {
+        headers: this.getHeader(),
+        responseType: 'blob'   
+    });
+    return response.data;
+}
+
+// User report
+static async downloaduserReport() {
+    const response = await axios.get(`${this.BASE_URL}/api/report/userdetails`, {
+        headers: this.getHeader(),
+        responseType: 'blob'   
+    });
+    return response.data;
+}
+
 static async createPaymentIntent(amount, currency = 'usd') {
     const response = await axios.post(`${this.BASE_URL}/api/payment/create-payment-intent`, {
         amount,
