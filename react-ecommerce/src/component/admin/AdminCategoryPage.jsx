@@ -36,12 +36,31 @@ const AdminCategoryPage = () => {
         }
     };
 
+     const handleDownloadReport = async () => {
+                    try {
+                        const pdfBlob = await ApiService.downloadcategoryItemsReport();
+                
+                        const url = window.URL.createObjectURL(new Blob([pdfBlob], { type: 'application/pdf' }));
+                        const link = document.createElement('a');
+                        link.href = url;
+                        link.setAttribute('download', 'categorylistReport.pdf'); 
+                        document.body.appendChild(link);
+                        link.click();
+                        link.parentNode.removeChild(link);
+                    } catch (error) {
+                        console.error("Failed to download report:", error);
+                    }
+                }
+
     return (
         <div className="admin-category-page">
             <div className="admin-category-list">
                 <h2>Categories</h2>
                 <button className="add-btn" onClick={() => navigate('/admin/add-category')}>
                     + Add Category
+                </button>
+                <button className="btn-outline" onClick={handleDownloadReport}>
+                      Download Category Report
                 </button>
 
                 <table className="category-table">
