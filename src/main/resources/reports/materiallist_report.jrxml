@@ -63,7 +63,7 @@ ORDER BY
             </staticText>
             <image>
                 <reportElement x="30" y="-5" width="50" height="50" uuid="12173bec-073b-4c84-9576-47517e8acef1"/>
-                <imageExpression><![CDATA["logo.png"]]></imageExpression>
+                <imageExpression><![CDATA["static/images/logo.png"]]></imageExpression>
             </image>
         </band>
     </title>
