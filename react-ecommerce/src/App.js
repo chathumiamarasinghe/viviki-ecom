@@ -40,6 +40,7 @@ import InventoryManagerPage from './component/inventorymanager/InventoryManager'
 import AdminUserPage from './component/admin/AdminUserPage';
 import AddUser from './component/admin/AddUser';
 import AdminLayout from "./component/admin/AdminLayout";
+import ReviewSection from './component/pages/ProductReviews';
 
 // Stripe public key
 const stripePromise = loadStripe('pk_test_51R20BrQuQy8aXxhAx1DlRKKigcryCTHcdVG6Re0qtmEb6Gzs0zf83Ibd5LE8IPy3qB3BDEaIH8mCXFc9hOwLIB4W0015O3VX9l'); // Replace with your Stripe public key
@@ -67,6 +68,7 @@ function App() {
             <Route path='/profile' element={<ProfilePage/>} />
             <Route path='/add-address' element={<AddressPage/>} />
             <Route path='/edit-address' element={<AddressPage/>} />
+            <Route path='/review-section' element={<ReviewSection />} />
             
             {/* Admin Routes */}
             <Route path='/admin' element={<AdminLayout />}>
