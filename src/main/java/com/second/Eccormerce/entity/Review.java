@@ -13,7 +13,7 @@ public class Review {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private String content;  // Changed from comment -> content
+    private String content;
 
     private Integer rating;
 
@@ -25,5 +25,5 @@ public class Review {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")
-    private User user; // assuming you already have a User entity
+    private User user;
 }
