@@ -1,0 +1,210 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with Jaspersoft Studio version 6.21.3.final using JasperReports Library version 6.21.3-4a3078d20785ebe464f18037d738d12fc98c13cf  -->
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="materiallist_report" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="fe4997ac-ebef-4517-b326-35c2db1a07a0">
+    <property name="com.jaspersoft.studio.data.sql.tables" value=""/>
+    <property name="com.jaspersoft.studio.data.defaultdataadapter" value="Ecommerce Data Adapter"/>
+    <queryString language="SQL">
+        <![CDATA[SELECT
+    m.id AS material_id,
+    m.name AS material_name,
+    m.description,
+    m.quantity,
+    m.created_at AS material_created_at,
+    mt.name AS material_type_name,
+    mt.unit_type
+FROM
+    materials m
+JOIN
+    material_type mt ON m.material_type_id = mt.id
+ORDER BY
+    m.name;]]>
+    </queryString>
+    <field name="material_id" class="java.lang.Long">
+        <property name="com.jaspersoft.studio.field.name" value="id"/>
+        <property name="com.jaspersoft.studio.field.label" value="material_id"/>
+        <property name="com.jaspersoft.studio.field.tree.path" value="materials"/>
+    </field>
+    <field name="material_name" class="java.lang.String">
+        <property name="com.jaspersoft.studio.field.name" value="name"/>
+        <property name="com.jaspersoft.studio.field.label" value="material_name"/>
+        <property name="com.jaspersoft.studio.field.tree.path" value="materials"/>
+    </field>
+    <field name="quantity" class="java.lang.Integer">
+        <property name="com.jaspersoft.studio.field.name" value="quantity"/>
+        <property name="com.jaspersoft.studio.field.label" value="quantity"/>
+        <property name="com.jaspersoft.studio.field.tree.path" value="materials"/>
+    </field>
+    <field name="material_created_at" class="java.time.LocalDateTime">
+        <property name="com.jaspersoft.studio.field.name" value="created_at"/>
+        <property name="com.jaspersoft.studio.field.label" value="material_created_at"/>
+        <property name="com.jaspersoft.studio.field.tree.path" value="materials"/>
+    </field>
+    <field name="material_type_name" class="java.lang.String">
+        <property name="com.jaspersoft.studio.field.name" value="name"/>
+        <property name="com.jaspersoft.studio.field.label" value="material_type_name"/>
+        <property name="com.jaspersoft.studio.field.tree.path" value="material_type"/>
+    </field>
+    <field name="unit_type" class="java.lang.String">
+        <property name="com.jaspersoft.studio.field.name" value="unit_type"/>
+        <property name="com.jaspersoft.studio.field.label" value="unit_type"/>
+        <property name="com.jaspersoft.studio.field.tree.path" value="material_type"/>
+    </field>
+    <background>
+        <band splitType="Stretch"/>
+    </background>
+    <title>
+        <band height="60" splitType="Stretch">
+            <staticText>
+                <reportElement x="20" y="-10" width="519" height="60" uuid="88f8fe28-2e23-4e5b-87b4-ff6d362844b0"/>
+                <textElement textAlignment="Center">
+                    <font size="40" isBold="true"/>
+                </textElement>
+                <text><![CDATA[MATERIAL LIST]]></text>
+            </staticText>
+            <image>
+                <reportElement x="30" y="-5" width="50" height="50" uuid="12173bec-073b-4c84-9576-47517e8acef1"/>
+                <imageExpression><![CDATA["logo.png"]]></imageExpression>
+            </image>
+        </band>
+    </title>
+    <pageHeader>
+        <band height="60" splitType="Stretch">
+            <staticText>
+                <reportElement x="132" y="0" width="287" height="37" forecolor="#666666" uuid="2024a513-c416-4de3-b1fe-23d04907b861"/>
+                <textElement textAlignment="Right">
+                    <font size="18" isBold="true"/>
+                </textElement>
+                <text><![CDATA[Viviki Rubber Products (pvt)Ltd]]></text>
+            </staticText>
+            <textField pattern="HH:mm">
+                <reportElement x="30" y="30" width="41" height="21" uuid="e40f63b3-ebf6-4004-a6d4-94839b1baa78"/>
+                <textFieldExpression><![CDATA[new java.util.Date()]]></textFieldExpression>
+            </textField>
+            <textField pattern="MMMMM dd, yyyy">
+                <reportElement x="70" y="30" width="101" height="21" uuid="a410b247-b81d-4d60-b14c-2647de7de3fe"/>
+                <textFieldExpression><![CDATA[new java.util.Date()]]></textFieldExpression>
+            </textField>
+            <staticText>
+                <reportElement x="390" y="30" width="151" height="21" uuid="d5b1adfd-c391-4e98-9ea9-049345b7fc68"/>
+                <text><![CDATA[Phone : 0752319534]]></text>
+            </staticText>
+        </band>
+    </pageHeader>
+    <columnHeader>
+        <band height="61" splitType="Stretch">
+            <frame>
+                <reportElement mode="Opaque" x="0" y="9" width="550" height="21" backcolor="#F68B1E" uuid="347cf122-895b-48d0-9c6c-fdb73728bfda"/>
+                <staticText>
+                    <reportElement x="-1" y="0" width="72" height="30" uuid="8268c1ea-5dd8-4b0c-b04a-54787b55ffd8">
+                        <property name="com.jaspersoft.studio.spreadsheet.connectionID" value="9833dcb8-6d3d-4c1a-90cf-6161b26f8236"/>
+                    </reportElement>
+                    <text><![CDATA[material_id]]></text>
+                </staticText>
+                <staticText>
+                    <reportElement x="70" y="0" width="100" height="30" uuid="30e65886-d6c7-46bf-ba1d-5d6b8dfa2f60">
+                        <property name="com.jaspersoft.studio.spreadsheet.connectionID" value="272108fe-9645-4e45-9857-19c2fffe704a"/>
+                    </reportElement>
+                    <text><![CDATA[material_name]]></text>
+                </staticText>
+                <staticText>
+                    <reportElement x="169" y="1" width="100" height="30" uuid="866f15fd-d1c7-4d08-97f5-658389744107">
+                        <property name="com.jaspersoft.studio.spreadsheet.connectionID" value="98c08a83-e059-4191-ba91-e570244c6553"/>
+                    </reportElement>
+                    <text><![CDATA[quantity]]></text>
+                </staticText>
+                <staticText>
+                    <reportElement x="270" y="1" width="100" height="30" uuid="15cf57e8-582f-4acb-90fa-f90e2fa00b57">
+                        <property name="com.jaspersoft.studio.spreadsheet.connectionID" value="851d3eef-81f3-46cc-908c-408fb0d43b2b"/>
+                    </reportElement>
+                    <text><![CDATA[material_type_name]]></text>
+                </staticText>
+                <staticText>
+                    <reportElement x="370" y="1" width="90" height="30" uuid="0db9f67d-57ed-4ba8-9725-d1580a8639f3">
+                        <property name="com.jaspersoft.studio.spreadsheet.connectionID" value="4d1cd0ce-1f14-475a-ae9d-1830ad36a545"/>
+                    </reportElement>
+                    <text><![CDATA[unit_type]]></text>
+                </staticText>
+                <staticText>
+                    <reportElement x="460" y="0" width="90" height="30" uuid="d2a8ee04-2839-47b8-abef-a5447ca248e0">
+                        <property name="com.jaspersoft.studio.spreadsheet.connectionID" value="7337a392-f20c-4835-b378-52361a35d0a6"/>
+                    </reportElement>
+                    <text><![CDATA[material_created_at]]></text>
+                </staticText>
+            </frame>
+        </band>
+    </columnHeader>
+    <detail>
+        <band height="56" splitType="Stretch">
+            <textField>
+                <reportElement x="0" y="0" width="71" height="30" uuid="0cb67a6d-7db5-44ff-a831-2efcb4bc35de">
+                    <property name="com.jaspersoft.studio.spreadsheet.connectionID" value="9833dcb8-6d3d-4c1a-90cf-6161b26f8236"/>
+                </reportElement>
+                <textFieldExpression><![CDATA[$F{material_id}]]></textFieldExpression>
+            </textField>
+            <textField>
+                <reportElement x="70" y="0" width="100" height="30" uuid="b2149b36-8cc0-44a1-85ed-330b2d3ac64d">
+                    <property name="com.jaspersoft.studio.spreadsheet.connectionID" value="272108fe-9645-4e45-9857-19c2fffe704a"/>
+                </reportElement>
+                <textFieldExpression><![CDATA[$F{material_name}]]></textFieldExpression>
+            </textField>
+            <textField>
+                <reportElement x="171" y="0" width="100" height="30" uuid="43a95135-4c66-4948-b06c-bc5cabd19d4a">
+                    <property name="com.jaspersoft.studio.spreadsheet.connectionID" value="98c08a83-e059-4191-ba91-e570244c6553"/>
+                </reportElement>
+                <textFieldExpression><![CDATA[$F{quantity}]]></textFieldExpression>
+            </textField>
+            <textField>
+                <reportElement x="271" y="0" width="100" height="30" uuid="ab2a2495-382c-4dd0-b053-3101ec72e4ab">
+                    <property name="com.jaspersoft.studio.spreadsheet.connectionID" value="851d3eef-81f3-46cc-908c-408fb0d43b2b"/>
+                </reportElement>
+                <textFieldExpression><![CDATA[$F{material_type_name}]]></textFieldExpression>
+            </textField>
+            <textField>
+                <reportElement x="371" y="0" width="89" height="30" uuid="f440dfe5-9281-4840-a2cc-b741bb2a37a0">
+                    <property name="com.jaspersoft.studio.spreadsheet.connectionID" value="4d1cd0ce-1f14-475a-ae9d-1830ad36a545"/>
+                </reportElement>
+                <textFieldExpression><![CDATA[$F{unit_type}]]></textFieldExpression>
+            </textField>
+            <textField>
+                <reportElement x="470" y="0" width="80" height="30" uuid="157a9916-234f-4449-a58f-27ab326ef1e1">
+                    <property name="com.jaspersoft.studio.spreadsheet.connectionID" value="7337a392-f20c-4835-b378-52361a35d0a6"/>
+                </reportElement>
+                <textFieldExpression><![CDATA[$F{material_created_at}]]></textFieldExpression>
+            </textField>
+        </band>
+    </detail>
+    <columnFooter>
+        <band height="13" splitType="Stretch"/>
+    </columnFooter>
+    <pageFooter>
+        <band height="63" splitType="Stretch">
+            <textField>
+                <reportElement x="222" y="31" width="50" height="21" uuid="5ac65603-4dfd-4f08-a3fc-5ae046412740"/>
+                <textElement textAlignment="Right"/>
+                <textFieldExpression><![CDATA["Page " + $V{PAGE_NUMBER}]]></textFieldExpression>
+            </textField>
+            <textField evaluationTime="Report">
+                <reportElement x="270" y="31" width="50" height="21" uuid="876208ff-764b-40dd-84df-3b14a887d54f"/>
+                <textElement textAlignment="Left"/>
+                <textFieldExpression><![CDATA[" of " + $V{PAGE_NUMBER}]]></textFieldExpression>
+            </textField>
+            <staticText>
+                <reportElement x="100" y="0" width="112" height="20" uuid="4c723127-9405-4160-a1a3-218dacd7c273"/>
+                <textElement>
+                    <font size="12"/>
+                </textElement>
+                <text><![CDATA[Material List Report]]></text>
+            </staticText>
+            <staticText>
+                <reportElement x="207" y="0" width="267" height="20" uuid="a41c327d-37dc-4780-903e-14b8a4c08c06"/>
+                <textElement>
+                    <font size="12"/>
+                </textElement>
+                <text><![CDATA[@ 2024 VIVIKI RUBBER PRODUCTS PVT LTD. All rights reserved.]]></text>
+            </staticText>
+        </band>
+    </pageFooter>
+    <summary>
+        <band height="14" splitType="Stretch"/>
+    </summary>
+</jasperReport>

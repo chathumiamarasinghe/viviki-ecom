@@ -29,6 +29,18 @@ public class ReportServiceImpl {
         return exportReport(reportName);
     }
 
+    public byte[] exportUserReport(String reportName) throws JRException, SQLException {
+        return exportReport(reportName);
+    }
+
+    public byte[] exportCategoryReport(String reportName) throws JRException, SQLException {
+        return exportReport(reportName);
+    }
+
+    public byte[] exportMaterialReport(String reportName) throws JRException, SQLException {
+        return exportReport(reportName);
+    }
+
     // Common method to export a report based on the JRXML file
     private byte[] exportReport(String reportName) throws JRException, SQLException {
         // Load the JRXML file dynamically based on the report name
