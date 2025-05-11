@@ -37,18 +37,10 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public Response registerUser(UserDto registrationRequest) {
-        // Check if the admin is attempting to add a user
-        User loggedInUser = getLoginUser();
-        if (loggedInUser.getRole() != UserRole.ADMIN) {
-            return Response.builder()
-                    .status(403)
-                    .message("Only admin can add users")
-                    .build();
-        }
-
+        // Set default role to USER if no role is provided
         UserRole role = UserRole.USER;
 
-        // Validate the role in the registration request and assign the correct role
+        // Validate and assign role from registration request if provided
         if (registrationRequest.getRole() != null) {
             switch (registrationRequest.getRole().toUpperCase()) {
                 case "ADMIN":
@@ -68,18 +60,18 @@ public class UserServiceImpl implements UserService {
             }
         }
 
-        // Create the user and save it to the database
+        // Create and save the new user in the database
         User user = User.builder()
                 .name(registrationRequest.getName())
                 .email(registrationRequest.getEmail())
                 .password(passwordEncoder.encode(registrationRequest.getPassword()))
                 .phoneNumber(registrationRequest.getPhoneNumber())
-                .role(role)
+                .role(role)  // Set the role during registration
                 .build();
 
         User savedUser = userRepo.save(user);
 
-        // Map saved user to DTO and return a response
+        // Map saved user to DTO and return response
         UserDto userDto = entityDtoMapper.mapUserToDtoBasic(savedUser);
         return Response.builder()
                 .status(200)
@@ -87,6 +79,7 @@ public class UserServiceImpl implements UserService {
                 .user(userDto)
                 .build();
     }
+
 
 
 
