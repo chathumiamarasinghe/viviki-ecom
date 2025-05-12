@@ -20,4 +20,16 @@
     color: #fff !important;
     cursor: pointer;
   }
+
+  .card-3d {
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.25);
+  border-radius: 15px;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.card-3d:hover {
+  transform: translateY(-8px);
+  box-shadow: 0 16px 30px rgba(0, 0, 0, 0.35);
+}
+
   

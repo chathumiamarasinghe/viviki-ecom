@@ -389,5 +389,30 @@ static async deleteMaterialType(materialTypeId) {
     return response.data;
 }
 
+// Total user count
+static async getTotalUserCount() {
+    const response = await axios.get(`${this.BASE_URL}/user/total`, {
+        headers: this.getHeader()
+    });
+    return response.data;
+}
+
+// Total product count
+static async getTotalProductCount() {
+    const response = await axios.get(`${this.BASE_URL}/product/total`, {
+        headers: this.getHeader()
+    });
+    return response.data;
+}
+
+// Total order count
+static async getTotalOrderCount() {
+    const response = await axios.get(`${this.BASE_URL}/order/total`, {
+        headers: this.getHeader()
+    });
+    return response.data;
+}
+
+
 
 }
