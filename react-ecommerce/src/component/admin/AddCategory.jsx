@@ -10,26 +10,45 @@ const AddCategory = () => {
 
     useEffect(() => {
             if (!ApiService.isAdminOrInventoryManager()) {
-                navigate("/unauthorized"); // Redirect if not allowed
+                navigate("/unauthorized"); 
             }
         }, [navigate]);
 
 
     const handleSubmit = async (e) => {
-        e.preventDefault();
-        try {
-            const response = await ApiService.createCategory({name});
-            if (response.status === 200) {
-                setMessage(response.message);
-                setTimeout(()=>{
-                    setMessage('');
-                    navigate("/admin/categories")
-                }, 3000)
-            }
-        } catch (error) {
-            setMessage(error.response?.data?.message || error.message || "Failed to save a category")
+    e.preventDefault();
+
+    
+    if (!name.trim()) {
+    setMessage("Category name is required");
+    return;
+}
+
+if (name.length < 3) {
+    setMessage("Category name must be at least 3 characters long");
+    return;
+}
+
+if (/^\d+$/.test(name)) {
+    setMessage("Category name cannot be only numbers");
+    return;
+}
+
+
+    try {
+        const response = await ApiService.createCategory({ name });
+        if (response.status === 200) {
+            setMessage(response.message);
+            setTimeout(() => {
+                setMessage('');
+                navigate("/admin/categories");
+            }, 3000);
         }
+    } catch (error) {
+        setMessage(error.response?.data?.message || error.message || "Failed to save category");
     }
+};
+
 
     return(
         <div className="add-category-page">
@@ -39,6 +58,7 @@ const AddCategory = () => {
                 <input type="text"
                 placeholder="Category Name"
                 value={name}
+                className={message ? 'error-input' : ''}
                 onChange={(e)=> setName(e.target.value)} />
 
                 <button type="submit">Add</button>
