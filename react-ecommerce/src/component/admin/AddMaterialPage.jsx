@@ -29,30 +29,58 @@ const AddMaterialPage = () => {
     }, [navigate]);
 
     const handleSubmit = async (e) => {
-        e.preventDefault();
-        try {
-            const materialData = {
-                name,
-                description,
-                quantity: parseInt(quantity),
-                materialType: {
-                    id: parseInt(selectedMaterialTypeId)
-                }
-            };
+    e.preventDefault();
 
-            const response = await ApiService.addMaterial(materialData);
-            if (response.status === 200) {
-                setMessage("Material added successfully!");
-                setTimeout(() => {
-                    setMessage('');
-                    navigate('/admin/materials');
-                }, 3000);
+    
+    if (!selectedMaterialTypeId) {
+        setMessage("Please select a material type.");
+        return;
+    }
+
+    if (!name.trim() || name.length < 3) {
+        setMessage("Material name must be at least 3 characters.");
+        return;
+    }
+
+    if (/^\d+$/.test(name.trim())) {
+        setMessage("Material name cannot be only numbers.");
+        return;
+    }
+
+    if (!description.trim() || description.length < 5) {
+        setMessage("Description must be at least 5 characters.");
+        return;
+    }
+
+    const qty = parseInt(quantity);
+    if (isNaN(qty) || qty <= 0) {
+        setMessage("Quantity must be a positive number.");
+        return;
+    }
+
+    
+    try {
+        const materialData = {
+            name,
+            description,
+            quantity: qty,
+            materialType: {
+                id: parseInt(selectedMaterialTypeId)
             }
-        } catch (error) {
-            setMessage(error.response?.data?.message || error.message || 'Unable to add material');
-        }
-    };
+        };
 
+        const response = await ApiService.addMaterial(materialData);
+        if (response.status === 200) {
+            setMessage("Material added successfully!");
+            setTimeout(() => {
+                setMessage('');
+                navigate('/admin/materials');
+            }, 3000);
+        }
+    } catch (error) {
+        setMessage(error.response?.data?.message || error.message || 'Unable to add material');
+    }
+};
     return (
         <div>
             <form onSubmit={handleSubmit} className="product-form">
