@@ -11,4 +11,6 @@ public interface OrderItemService {
     Response placeOrder(OrderRequest orderRequest);
     Response updateOrderItemStatus(Long orderItemId, String status);
     Response filterOrderItems(OrderStatus status, LocalDateTime startDate, LocalDateTime endDate, Long itemId, Pageable pageable);
+    Response getTotalOrderCount();
+
 }
