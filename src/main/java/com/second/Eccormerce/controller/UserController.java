@@ -40,4 +40,10 @@ public class UserController {
         return userService.deleteUser(userId);
     }
 
+    @GetMapping("/total")
+    public ResponseEntity<Response> getTotalUserCount() {
+        return ResponseEntity.ok(userService.getTotalUserCount());
+    }
+
+
 }
