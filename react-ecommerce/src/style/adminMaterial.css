@@ -1,27 +1,67 @@
 .admin-material-page {
-    max-width: 900px;
-    margin: 50px auto;
-    padding: 20px;
+    max-width: 1000px;
+    margin: 20px auto;
+    padding: 10px;
+    background-color: #fff;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
+    border-radius: 8px;
+    font-family: 'Segoe UI', sans-serif;
 }
 
 .admin-material-list h2 {
-    font-size: 28px;
+    font-size: 32px;
     margin-bottom: 20px;
+    color: #333;
+}
+
+.top-controls {
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    align-items: center;
+    margin-bottom: 20px;
+    gap: 10px;
 }
 
 .add-btn {
-    background-color: transparent;
-    color: #f68b1e;
+    background-color: #f68b1e;
+    color: #fff;
     font-size: 16px;
-    border: 2px solid #f68b1e;
-    padding: 8px 16px;
-    border-radius: 4px;
+    border: none;
+    padding: 10px 18px;
+    border-radius: 6px;
     cursor: pointer;
-    margin-bottom: 20px;
     transition: all 0.3s ease;
 }
-
 .add-btn:hover {
+    background-color: #e67e1c;
+}
+
+.filter-section {
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+    margin-bottom: 20px;
+}
+
+.filter-input {
+    padding: 8px 12px;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    font-size: 14px;
+    min-width: 180px;
+}
+
+.btn-outline {
+    padding: 8px 14px;
+    background-color: transparent;
+    border: 2px solid #f68b1e;
+    color: #f68b1e;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: 0.3s;
+}
+.btn-outline:hover {
     background-color: #f68b1e;
     color: #fff;
 }
@@ -29,33 +69,34 @@
 .material-table {
     width: 100%;
     border-collapse: collapse;
-    font-size: 16px;
+    font-size: 15px;
 }
 
 .material-table th,
 .material-table td {
     border: 1px solid #ddd;
-    padding: 12px 15px;
+    padding: 14px;
     text-align: left;
 }
 
 .material-table th {
-    background-color: #f4f4f4;
-    color: #333;
+    background-color: #f9f9f9;
+    font-weight: 600;
+    color: #444;
 }
 
 .material-table tbody tr:nth-child(even) {
-    background-color: #fafafa;
+    background-color: #fcfcfc;
 }
 
 .outline-btn {
     padding: 6px 12px;
     border: 2px solid;
-    border-radius: 4px;
+    border-radius: 6px;
     font-size: 14px;
-    margin-right: 8px;
+    margin-right: 6px;
     cursor: pointer;
-    transition: 0.3s;
+    transition: 0.3s ease;
     background-color: transparent;
 }
 
@@ -69,10 +110,17 @@
 }
 
 .delete-btn {
-    border-color: tomato;
-    color: tomato;
+    border-color: #e74c3c;
+    color: #e74c3c;
 }
 .delete-btn:hover {
-    background-color: tomato;
+    background-color: #e74c3c;
     color: #fff;
 }
+
+.error-msg {
+    color: red;
+    margin-bottom: 10px;
+    font-weight: 500;
+}
+
