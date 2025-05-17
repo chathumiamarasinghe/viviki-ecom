@@ -30,6 +30,20 @@ const EditMaterialType = () => {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
+        if (!name.trim()) {
+    setMessage("Material type name cannot be empty.");
+    return;
+}
+if (!unitType) {
+    setMessage("Please select a valid unit type.");
+    return;
+}
+if (/^\d+$/.test(name.trim())) {
+        setMessage("Product name cannot be only numbers.");
+        return;
+    }
+
+
         try {
             const updatedMaterialType = {
                 name,
