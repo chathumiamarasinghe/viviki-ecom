@@ -29,3 +29,7 @@
 .category-form button:hover{
     background-color: #c4803c;
 }
+
+.error-input {
+  border: 2px solid red;
+}
