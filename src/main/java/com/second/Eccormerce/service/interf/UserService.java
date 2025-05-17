@@ -11,6 +11,7 @@ public interface UserService {
     Response getAllUsers();
     User getLoginUser();
     Response getUserInfoAndOrderHistory();
-
     Response deleteUser(Long userId);
+    Response getTotalUserCount();
+
 }
