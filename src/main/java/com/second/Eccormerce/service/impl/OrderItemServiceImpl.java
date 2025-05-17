@@ -60,7 +60,7 @@ public class OrderItemServiceImpl implements OrderItemService {
 
             // Reduce stock
             product.setQuantity(product.getQuantity() - orderQty);
-            productRepo.save(product); // ✅ Save updated quantity
+            productRepo.save(product);
 
             OrderItem orderItem = new OrderItem();
             orderItem.setProduct(product);
@@ -129,5 +129,16 @@ public class OrderItemServiceImpl implements OrderItemService {
                 .totalElement(orderItemPage.getTotalElements())
                 .build();
     }
+
+    @Override
+    public Response getTotalOrderCount() {
+        long count = orderItemRepo.count();
+        return Response.builder()
+                .status(200)
+                .message("Total number of orders")
+                .totalElement(count)
+                .build();
+    }
+
 
 }
