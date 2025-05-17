@@ -1,5 +1,7 @@
 package com.second.Eccormerce.service.interf;
 
+import java.util.List;
+
 public interface EmailService {
-    void sendPaymentConfirmation(String toEmail, String subject, String body);
+    void sendNotification(List<String> toAddresses, String subject, String body);
 }
