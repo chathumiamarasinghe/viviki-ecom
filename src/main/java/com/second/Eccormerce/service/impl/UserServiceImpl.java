@@ -160,6 +160,17 @@ public class UserServiceImpl implements UserService {
                 .build();
     }
 
+    @Override
+    public Response getTotalUserCount() {
+        long count = userRepo.count();
+        return Response.builder()
+                .status(200)
+                .message("Total number of users")
+                .totalElement(count)
+                .build();
+    }
+
+
 
 
 }
