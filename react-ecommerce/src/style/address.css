@@ -41,8 +41,9 @@
     background-color: #8c4d0e;
 }
 
-.error-message{
+.error {
     color: red;
-    margin-bottom: 20px;
-    text-align: center;
+    font-size: 0.85rem;
+    margin-top: 2px;
+    display: block;
 }

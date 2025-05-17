@@ -11,6 +11,11 @@ const AdminProductPage = () => {
     const [totalPages, setTotalPages] = useState(0);
     const [error, setError] = useState(null);
     const itemsPerPage = 10;
+    const [maxPrice, setMaxPrice] = useState('');
+    const [maxQuantity, setMaxQuantity] = useState('');
+    const [categoryName, setCategoryName] = useState('');
+    const [categories, setCategories] = useState([]);
+
 
     const fetchProducts = async () => {
         try {
@@ -23,9 +28,20 @@ const AdminProductPage = () => {
         }
     };
 
-    useEffect(() => {
-        fetchProducts();
-    }, [currentPage]);
+   useEffect(() => {
+    fetchProducts();
+    fetchCategories();
+}, [currentPage]);
+
+const fetchCategories = async () => {
+    try {
+        const response = await ApiService.getAllCategory();
+        setCategories(response.categoryList || []);
+    } catch (error) {
+        console.error("Error fetching categories:", error);
+    }
+};
+
 
     const handleEdit = (id) => {
         navigate(`/admin/edit-product/${id}`);
@@ -44,38 +60,86 @@ const AdminProductPage = () => {
     };
 
     const handleDownloadReport = async () => {
-            try {
-                const pdfBlob = await ApiService.downloadproductItemsReport();
-        
-                const url = window.URL.createObjectURL(new Blob([pdfBlob], { type: 'application/pdf' }));
-                const link = document.createElement('a');
-                link.href = url;
-                link.setAttribute('download', 'productlistReport.pdf'); 
-                document.body.appendChild(link);
-                link.click();
-                link.parentNode.removeChild(link);
-            } catch (error) {
-                console.error("Failed to download report:", error);
-            }
-        }
+    let validationError = '';
+
+    if (maxPrice && (isNaN(maxPrice) || Number(maxPrice) < 0)) {
+        validationError = "Max Price must be a non-negative number.";
+    } else if (maxQuantity && (isNaN(maxQuantity) || Number(maxQuantity) < 0)) {
+        validationError = "Max Quantity must be a non-negative number.";
+    }
+
+    if (validationError) {
+        setError(validationError);
+        return;
+    }
+
+    try {
+        const pdfBlob = await ApiService.downloadproductItemsReport(maxPrice, maxQuantity, categoryName);
+        const url = window.URL.createObjectURL(new Blob([pdfBlob], { type: 'application/pdf' }));
+        const link = document.createElement('a');
+        link.href = url;
+        link.setAttribute('download', 'productlistReport.pdf');
+        document.body.appendChild(link);
+        link.click();
+        link.remove();
+        setError(null);
+    } catch (error) {
+        setError("Failed to download the report. Please try again later.");
+        console.error("Download error:", error);
+    }
+};
+
+
 
     return (
         <div className="admin-product-page">
             <div className="admin-product-list">
                 <h2>Products</h2>
-                <button className="btn-outline" onClick={() => navigate('/admin/add-product')}>
-                    Add Product
+                <button className="add-btn" onClick={() => navigate('/admin/add-product')}>
+                    + Add Product
                 </button>
-                {error && <p className="error-message">{error}</p>}
-                <button className="btn-outline" onClick={handleDownloadReport}>
-                      Download Product Report
-                </button>
+                <div className="filter-inputs">
+    <input
+        type="number"
+        min="0"
+        placeholder="Max Price"
+        value={maxPrice}
+        onChange={(e) => setMaxPrice(e.target.value)}
+    />
+    <input
+        type="number"
+        min="0"
+        placeholder="Max Quantity"
+        value={maxQuantity}
+        onChange={(e) => setMaxQuantity(e.target.value)}
+    />
+    <select
+        value={categoryName}
+        onChange={(e) => setCategoryName(e.target.value)}
+        className="dropdown-filter"
+    >
+        <option value="">All Categories</option>
+        {categories.map((cat) => (
+            <option key={cat.id} value={cat.name}>
+                {cat.name}
+            </option>
+        ))}
+    </select>
+
+    <button className="btn-outline" onClick={handleDownloadReport}>
+        Download Product Report
+    </button>
+
+</div>
+
+{error && <p className="error-message">{error}</p>}
 
                 <table className="product-table">
                     <thead>
                         <tr>
                             <th>Name</th>
                             <th>Quantity</th>
+                            <th>Category</th>
                             <th>Actions</th>
                         </tr>
                     </thead>
@@ -84,6 +148,7 @@ const AdminProductPage = () => {
                             <tr key={product.id}>
                                 <td>{product.name}</td>
                                 <td>{product.quantity}</td>
+                                <td>{product.category?.name || 'N/A'}</td>
                                 <td>
                                     <button className="btn-outline" onClick={() => handleEdit(product.id)}>Edit</button>
                                     <button className="btn-delete" onClick={() => handleDelete(product.id)}>Delete</button>

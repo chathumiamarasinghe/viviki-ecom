@@ -16,20 +16,38 @@ const AddMaterialType = () => {
     }, [navigate]);
 
     const handleSubmit = async (e) => {
-        e.preventDefault();
-        try {
-            const response = await ApiService.createMaterialType({ name, unitType });
-            if (response.status === 200) {
-                setMessage(response.message);
-                setTimeout(() => {
-                    setMessage('');
-                    navigate("/admin/materialTypes");
-                }, 3000);
-            }
-        } catch (error) {
-            setMessage(error.response?.data?.message || error.message || "Failed to save a materialType");
+    e.preventDefault();
+
+    
+    if (!name.trim() || name.length < 3) {
+        setMessage("Material Type name must be at least 3 characters.");
+        return;
+    }
+
+    if (/^\d+$/.test(name.trim())) {
+        setMessage("Material Type name cannot be only numbers.");
+        return;
+    }
+
+    if (!unitType) {
+        setMessage("Please select a unit type.");
+        return;
+    }
+
+    try {
+        const response = await ApiService.createMaterialType({ name, unitType });
+        if (response.status === 200) {
+            setMessage(response.message);
+            setTimeout(() => {
+                setMessage('');
+                navigate("/admin/materialTypes");
+            }, 3000);
         }
-    };
+    } catch (error) {
+        setMessage(error.response?.data?.message || error.message || "Failed to save a materialType");
+    }
+};
+
 
     return (
         <div className="add-category-page">

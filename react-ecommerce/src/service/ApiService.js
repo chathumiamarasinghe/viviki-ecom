@@ -311,14 +311,22 @@ static async downloadOrderItemsReport() {
     return response.data;
 }
 
-// Product report
-static async downloadproductItemsReport() {
+static async downloadproductItemsReport(maxPrice, maxQuantity, categoryName) {
+    const params = {};
+
+    if (maxPrice) params.maxPrice = maxPrice;
+    if (maxQuantity) params.maxQuantity = maxQuantity;
+    if (categoryName) params.categoryName = categoryName;  // add this line
+
     const response = await axios.get(`${this.BASE_URL}/api/report/productlist`, {
         headers: this.getHeader(),
-        responseType: 'blob'   
+        params, // sends query parameters
+        responseType: 'blob'
     });
+
     return response.data;
 }
+
 
 // Category report
 static async downloadcategoryItemsReport() {
@@ -329,14 +337,20 @@ static async downloadcategoryItemsReport() {
     return response.data;
 }
 
-// Material report
-static async downloadmaterialItemsReport() {
-    const response = await axios.get(`${this.BASE_URL}/api/report/materiallist`, {
+// Material report with filters
+static async downloadmaterialItemsReport(materialType = null, quantity = null) {
+    const params = new URLSearchParams();
+    if (materialType) params.append('materialType', materialType);
+    if (quantity !== null && quantity !== undefined) params.append('quantity', quantity);
+
+    const response = await axios.get(`${this.BASE_URL}/api/report/materiallist?${params.toString()}`, {
         headers: this.getHeader(),
-        responseType: 'blob'   
+        responseType: 'blob'
     });
+
     return response.data;
 }
+
 
 // User report
 static async downloaduserReport() {
@@ -388,6 +402,31 @@ static async deleteMaterialType(materialTypeId) {
     })
     return response.data;
 }
+
+// TOTAL USERS
+static async getTotalUserCount() {
+    const response = await axios.get(`${this.BASE_URL}/user/total`, {
+        headers: this.getHeader()
+    });
+    return response.data;
+}
+
+// TOTAL PRODUCTS
+static async getTotalProductCount() {
+    const response = await axios.get(`${this.BASE_URL}/product/total`, {
+        headers: this.getHeader()
+    });
+    return response.data;
+}
+
+// TOTAL ORDERS
+static async getTotalOrderCount() {
+    const response = await axios.get(`${this.BASE_URL}/order/total`, {
+        headers: this.getHeader()
+    });
+    return response.data;
+}
+
 
 
 }

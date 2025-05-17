@@ -20,11 +20,11 @@ const AddUser = () => {
     const [loading, setLoading] = useState(false);
     const [message, setMessage] = useState('');
 
-    // Handle change for form fields
+    
     const handleChange = (e) => {
         const { name, value } = e.target;
         if (name.includes('address')) {
-            const addressField = name.split('.')[1]; // Get address field (e.g., street, city)
+            const addressField = name.split('.')[1]; 
             setUserData({
                 ...userData,
                 address: {
@@ -40,27 +40,58 @@ const AddUser = () => {
         }
     };
 
-    // Handle form submission
+    
     const handleSubmit = async (e) => {
-        e.preventDefault();
-        setLoading(true);
-        setMessage('');
-        
-        try {
-            const res = await ApiService.addUser(userData); // Call API to add user
-            if (res.status === 200) {
-                setMessage('User added successfully!');
-                // Optionally, redirect or reset the form
-            } else {
-                setMessage('Failed to add user');
-            }
-        } catch (error) {
-            console.error('Error adding user:', error);
-            setMessage('Error adding user');
-        } finally {
-            setLoading(false);
+    e.preventDefault();
+    setLoading(true);
+    setMessage('');
+
+    // Basic Validations
+    if (!/^[a-zA-Z\s]{3,}$/.test(userData.name)) {
+        setMessage("Name must be at least 3 characters and contain only letters.");
+        setLoading(false);
+        return;
+    }
+
+    if (!/^\S+@\S+\.\S+$/.test(userData.email)) {
+        setMessage("Invalid email format.");
+        setLoading(false);
+        return;
+    }
+
+    if (!/^\d{10}$/.test(userData.phoneNumber)) {
+        setMessage("Phone number must be 10 digits.");
+        setLoading(false);
+        return;
+    }
+
+    if (userData.password.length < 6) {
+        setMessage("Password must be at least 6 characters.");
+        setLoading(false);
+        return;
+    }
+
+    if (!/^\d{5}(-\d{4})?$/.test(userData.address.zipCode)) {
+        setMessage("Invalid zip code.");
+        setLoading(false);
+        return;
+    }
+
+    try {
+        const res = await ApiService.addUser(userData);
+        if (res.status === 200) {
+            setMessage('User added successfully!');
+        } else {
+            setMessage('Failed to add user');
         }
-    };
+    } catch (error) {
+        console.error('Error adding user:', error);
+        setMessage('Error adding user');
+    } finally {
+        setLoading(false);
+    }
+};
+
 
     return (
         <div className="container mt-4">
@@ -68,7 +99,7 @@ const AddUser = () => {
             {message && <div className="alert alert-info">{message}</div>}
 
             <form onSubmit={handleSubmit}>
-                {/* Name */}
+                
                 <div className="mb-3">
                     <label htmlFor="name" className="form-label">Name</label>
                     <input
@@ -82,7 +113,7 @@ const AddUser = () => {
                     />
                 </div>
 
-                {/* Email */}
+                
                 <div className="mb-3">
                     <label htmlFor="email" className="form-label">Email</label>
                     <input
@@ -96,7 +127,7 @@ const AddUser = () => {
                     />
                 </div>
 
-                {/* Phone Number */}
+                
                 <div className="mb-3">
                     <label htmlFor="phoneNumber" className="form-label">Phone Number</label>
                     <input
@@ -110,7 +141,7 @@ const AddUser = () => {
                     />
                 </div>
 
-                {/* Password */}
+                
                 <div className="mb-3">
                     <label htmlFor="password" className="form-label">Password</label>
                     <input
@@ -124,7 +155,7 @@ const AddUser = () => {
                     />
                 </div>
 
-                {/* Address */}
+                
                 <div className="mb-3">
                     <label className="form-label">Address</label>
                     <input
@@ -174,7 +205,7 @@ const AddUser = () => {
                     />
                 </div>
 
-                {/* Role */}
+                
                 <div className="mb-3">
                     <label htmlFor="role" className="form-label">Role</label>
                     <select
@@ -191,7 +222,7 @@ const AddUser = () => {
                     </select>
                 </div>
 
-                {/* Submit Button */}
+                
                 <button type="submit" className="btn btn-primary" disabled={loading}>
                     {loading ? 'Adding User...' : 'Add User'}
                 </button>
