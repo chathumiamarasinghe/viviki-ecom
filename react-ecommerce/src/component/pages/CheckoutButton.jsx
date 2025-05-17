@@ -64,6 +64,7 @@ const CheckoutButton = () => {
             alert("Payment successful!");
             navigate("/");
         }
+
     };
 
     const handleEditAddress = () => {
