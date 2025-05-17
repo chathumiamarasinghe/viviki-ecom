@@ -5,58 +5,79 @@ import ApiService from "../../service/ApiService";
 
 const EditProductPage = () => {
     const { productId } = useParams();
+    const navigate = useNavigate();
+
     const [image, setImage] = useState(null);
+    const [imageUrl, setImageUrl] = useState(null);
     const [categories, setCategories] = useState([]);
     const [categoryId, setCategoryId] = useState('');
     const [name, setName] = useState('');
     const [description, setDescription] = useState('');
     const [price, setPrice] = useState('');
-    const [quantity, setQuantity] = useState(''); 
-    const [imageUrl, setImageUrl] = useState(null);
+    const [quantity, setQuantity] = useState('');
     const [message, setMessage] = useState('');
-    const navigate = useNavigate();
+    const [loading, setLoading] = useState(true);
 
     useEffect(() => {
-            if (!ApiService.isAdminOrInventoryManager()) {
-                navigate("/unauthorized");
-            }
-        }, [navigate]);
-
-    useEffect(() => {
-        ApiService.getAllCategory().then((res) => setCategories(res.categoryList));
-
-        if (productId) {
-            ApiService.getProductById(productId).then((response) => {
-                setName(response.product.name);
-                setDescription(response.product.description);
-                setPrice(response.product.price);
-                setQuantity(response.product.quantity);
-                setCategoryId(response.product.categoryId);
-                setImageUrl(response.product.imageUrl);
-            });
+        if (!ApiService.isAdminOrInventoryManager()) {
+            navigate("/unauthorized");
+            return;
         }
-    }, [productId]);
+
+        const fetchData = async () => {
+            try {
+                const categoryRes = await ApiService.getAllCategory();
+                setCategories(categoryRes.categoryList);
+
+                if (productId) {
+                    const productRes = await ApiService.getProductById(productId);
+                    const product = productRes.product;
+
+                    setName(product.name);
+                    setDescription(product.description);
+                    setPrice(product.price);
+                    setQuantity(product.quantity);
+                    setCategoryId(product.categoryId);
+                    setImageUrl(product.imageUrl);
+                }
+            } catch (error) {
+                setMessage("Failed to fetch data.");
+            } finally {
+                setLoading(false);
+            }
+        };
+
+        fetchData();
+    }, [productId, navigate]);
 
     const handleImageChange = (e) => {
-        setImage(e.target.files[0]);
-        setImageUrl(URL.createObjectURL(e.target.files[0]));
+        const file = e.target.files[0];
+        if (file) {
+            setImage(file);
+            setImageUrl(URL.createObjectURL(file));
+        }
     };
 
     const handleSubmit = async (e) => {
         e.preventDefault();
+
+        if (!name.trim() || !description.trim() || !price || !quantity || !categoryId) {
+            setMessage("Please fill all required fields.");
+            return;
+        }
+
         try {
             const formData = new FormData();
-            if (image) {
-                formData.append('image', image);
-            }
-            formData.append('productId', productId);
-            formData.append('categoryId', categoryId);
-            formData.append('name', name);
-            formData.append('description', description);
-            formData.append('price', price);
-            formData.append('quantity', quantity);
+            if (image) formData.append("image", image);
+            formData.append("productId", productId);
+            formData.append("categoryId", categoryId);
+            formData.append("name", name);
+            formData.append("description", description);
+            formData.append("price", price);
+            formData.append("quantity", quantity);
 
             const response = await ApiService.updateProduct(formData);
+
             if (response.status === 200) {
                 setMessage(response.message);
                 setTimeout(() => {
@@ -64,11 +85,19 @@ const EditProductPage = () => {
                     navigate('/admin/products');
                 }, 3000);
             }
-
         } catch (error) {
             setMessage(error.response?.data?.message || error.message || 'Unable to update product');
         }
     };
+
+    useEffect(() => {
+        if (message) {
+            const timer = setTimeout(() => setMessage(''), 3000);
+            return () => clearTimeout(timer);
+        }
+    }, [message]);
+
+    if (loading) return <p>Loading...</p>;
 
     return (
         <form onSubmit={handleSubmit} className="product-form">
@@ -76,9 +105,9 @@ const EditProductPage = () => {
             {message && <div className="message">{message}</div>}
 
             <input type="file" onChange={handleImageChange} />
-            {imageUrl && <img src={imageUrl} alt={name} />}
+            {imageUrl && <img src={imageUrl} alt="Preview" style={{ maxWidth: "150px", margin: "10px 0" }} />}
 
-            <select value={categoryId} onChange={(e) => setCategoryId(e.target.value)}>
+            <select value={categoryId} onChange={(e) => setCategoryId(e.target.value)} required>
                 <option value="">Select Category</option>
                 {categories.map((cat) => (
                     <option value={cat.id} key={cat.id}>{cat.name}</option>
@@ -90,12 +119,14 @@ const EditProductPage = () => {
                 placeholder="Product name"
                 value={name}
                 onChange={(e) => setName(e.target.value)}
+                required
             />
 
             <textarea
                 placeholder="Description"
                 value={description}
                 onChange={(e) => setDescription(e.target.value)}
+                required
             />
 
             <input
@@ -103,6 +134,9 @@ const EditProductPage = () => {
                 placeholder="Price"
                 value={price}
                 onChange={(e) => setPrice(e.target.value)}
+                required
+                min="0"
+                step="0.01"
             />
 
             <input
@@ -110,6 +144,8 @@ const EditProductPage = () => {
                 placeholder="Quantity"
                 value={quantity}
                 onChange={(e) => setQuantity(e.target.value)}
+                required
+                min="0"
             />
 
             <button type="submit">Update</button>
