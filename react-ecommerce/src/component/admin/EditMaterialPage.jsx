@@ -48,6 +48,20 @@ const EditMaterialPage = () => {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
+
+        if (!name.trim()) {
+    setMessage("Material name cannot be empty.");
+    return;
+}
+if (!materialTypeId) {
+    setMessage("Please select a material type.");
+    return;
+}
+if (quantity < 0) {
+    setMessage("Quantity must be a non-negative number.");
+    return;
+}
+
         try {
             const materialData = {
                 id: materialId,
