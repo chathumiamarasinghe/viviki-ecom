@@ -80,12 +80,10 @@ public class ProductController {
         return ResponseEntity.ok(productService.searchProduct(searchValue));
     }
 
-
-
-
-
-
-
+    @GetMapping("/total")
+    public ResponseEntity<Response> getTotalProductCount() {
+        return ResponseEntity.ok(productService.getTotalProductCount());
+    }
 
 
 }
