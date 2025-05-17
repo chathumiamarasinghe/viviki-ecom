@@ -23,35 +23,29 @@ const AdminOrdersPage = () => {
 
     const navigate = useNavigate();
 
-    useEffect(() => {
-        fetchOrders();
-    }, [searchStatus, currentPage]);
-
-
-
+   useEffect(() => {
     const fetchOrders = async () => {
-
         try {
             let response;
-            if(searchStatus){
+            if (searchStatus) {
                 response = await ApiService.getAllOrderItemsByStatus(searchStatus);
-            }else{
+            } else {
                 response = await ApiService.getAllOrders();
             }
             const orderList = response.orderItemList || [];
 
-            setTotalPages(Math.ceil(orderList.length/itemsPerPage));
+            setTotalPages(Math.ceil(orderList.length / itemsPerPage));
             setOrders(orderList);
-            setFilteredOrders(orderList.slice((currentPage -1) * itemsPerPage, currentPage * itemsPerPage));
-
-
+            setFilteredOrders(orderList.slice((currentPage - 1) * itemsPerPage, currentPage * itemsPerPage));
         } catch (error) {
-            setError(error.response?.data?.message || error.message || 'unable to fetch orders')
-            setTimeout(()=>{
-                setError('')
-            }, 3000)
+            setError(error.response?.data?.message || error.message || 'Unable to fetch orders');
+            setTimeout(() => setError(''), 3000);
         }
-    }
+    };
+
+    fetchOrders();
+}, [searchStatus, currentPage]);
+
 
     const handleFilterChange = (e) =>{
         const filterValue = e.target.value;
@@ -115,7 +109,7 @@ const AdminOrdersPage = () => {
             {/* Download Report Button */}
             <div className="download-report-container">
                 <button 
-                    className="btn btn-outline-warning" 
+                    className="download-report-btn" 
                     onClick={downloadOrderReport}>
                     Download Order Report
                 </button>
