@@ -3,6 +3,12 @@
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="materiallist_report" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="fe4997ac-ebef-4517-b326-35c2db1a07a0">
     <property name="com.jaspersoft.studio.data.sql.tables" value=""/>
     <property name="com.jaspersoft.studio.data.defaultdataadapter" value="Ecommerce Data Adapter"/>
+    <parameter name="MATERIAL_TYPE" class="java.lang.String">
+        <defaultValueExpression><![CDATA[null]]></defaultValueExpression>
+    </parameter>
+    <parameter name="QUANTITY" class="java.lang.Integer">
+        <defaultValueExpression><![CDATA[null]]></defaultValueExpression>
+    </parameter>
     <queryString language="SQL">
         <![CDATA[SELECT
     m.id AS material_id,
@@ -16,8 +22,17 @@ FROM
     materials m
 JOIN
     material_type mt ON m.material_type_id = mt.id
+WHERE
+    (
+        $P{MATERIAL_TYPE} IS NULL OR mt.name = $P{MATERIAL_TYPE}
+    )
+    AND
+    (
+        $P{QUANTITY} IS NULL OR m.quantity >= $P{QUANTITY}
+    )
 ORDER BY
-    m.name;]]>
+    m.name;
+]]>
     </queryString>
     <field name="material_id" class="java.lang.Long">
         <property name="com.jaspersoft.studio.field.name" value="id"/>
@@ -53,41 +68,64 @@ ORDER BY
         <band splitType="Stretch"/>
     </background>
     <title>
-        <band height="60" splitType="Stretch">
-            <staticText>
-                <reportElement x="20" y="-10" width="519" height="60" uuid="88f8fe28-2e23-4e5b-87b4-ff6d362844b0"/>
-                <textElement textAlignment="Center">
-                    <font size="40" isBold="true"/>
-                </textElement>
-                <text><![CDATA[MATERIAL LIST]]></text>
-            </staticText>
-            <image>
-                <reportElement x="30" y="-5" width="50" height="50" uuid="12173bec-073b-4c84-9576-47517e8acef1"/>
-                <imageExpression><![CDATA["static/images/logo.png"]]></imageExpression>
-            </image>
-        </band>
-    </title>
-    <pageHeader>
-        <band height="60" splitType="Stretch">
-            <staticText>
-                <reportElement x="132" y="0" width="287" height="37" forecolor="#666666" uuid="2024a513-c416-4de3-b1fe-23d04907b861"/>
-                <textElement textAlignment="Right">
-                    <font size="18" isBold="true"/>
-                </textElement>
-                <text><![CDATA[Viviki Rubber Products (pvt)Ltd]]></text>
-            </staticText>
+        <band height="105" splitType="Stretch">
+            <frame>
+                <reportElement mode="Opaque" x="-11" y="10" width="582" height="70" backcolor="#F68B1E" uuid="cc8008b6-18bb-48d1-a04d-e08353445a55"/>
+                <image>
+                    <reportElement x="10" y="13" width="50" height="50" uuid="c7d9c8e4-c272-4ec5-bd91-f30a06afabf0"/>
+                    <imageExpression><![CDATA["static/images/logo.png"]]></imageExpression>
+                </image>
+                <staticText>
+                    <reportElement x="131" y="30" width="311" height="33" uuid="472dd51c-acd3-4dd6-8f5d-69ff6ceefd60"/>
+                    <textElement>
+                        <font size="26"/>
+                    </textElement>
+                    <text><![CDATA[PRODUCT LIST REPORT]]></text>
+                </staticText>
+                <staticText>
+                    <reportElement x="82" y="0" width="419" height="37" forecolor="#666666" uuid="588125ff-16fc-42c4-a441-a5e3b0f69156"/>
+                    <textElement textAlignment="Right">
+                        <font size="21" isBold="true"/>
+                    </textElement>
+                    <text><![CDATA[VIVIKI RUBBER PRODUCTS(PVT) LTD]]></text>
+                </staticText>
+                <staticText>
+                    <reportElement x="320" y="70" width="142" height="21" uuid="2d86ff3c-8625-4405-84de-88a1e52dc6c6"/>
+                    <text><![CDATA[Phone : 0752319534]]></text>
+                </staticText>
+            </frame>
             <textField pattern="HH:mm">
-                <reportElement x="30" y="30" width="41" height="21" uuid="e40f63b3-ebf6-4004-a6d4-94839b1baa78"/>
+                <reportElement x="4" y="-10" width="41" height="21" uuid="e40f63b3-ebf6-4004-a6d4-94839b1baa78"/>
                 <textFieldExpression><![CDATA[new java.util.Date()]]></textFieldExpression>
             </textField>
             <textField pattern="MMMMM dd, yyyy">
-                <reportElement x="70" y="30" width="101" height="21" uuid="a410b247-b81d-4d60-b14c-2647de7de3fe"/>
+                <reportElement x="40" y="-10" width="101" height="21" uuid="a410b247-b81d-4d60-b14c-2647de7de3fe"/>
                 <textFieldExpression><![CDATA[new java.util.Date()]]></textFieldExpression>
             </textField>
             <staticText>
-                <reportElement x="390" y="30" width="151" height="21" uuid="d5b1adfd-c391-4e98-9ea9-049345b7fc68"/>
-                <text><![CDATA[Phone : 0752319534]]></text>
+                <reportElement x="140" y="80" width="151" height="21" uuid="8485b4c1-4ddf-4c8c-a9bc-28116e227b71"/>
+                <text><![CDATA[Email : rubberstore@gmail.com]]></text>
             </staticText>
+        </band>
+    </title>
+    <pageHeader>
+        <band height="37" splitType="Stretch">
+            <staticText>
+                <reportElement x="90" y="0" width="70" height="21" uuid="969f7240-d00a-465a-88f0-192149133198"/>
+                <text><![CDATA[Max Quanity:]]></text>
+            </staticText>
+            <staticText>
+                <reportElement x="310" y="0" width="93" height="21" uuid="0bdf731d-cbe5-4cf5-8ed6-f1616f66370c"/>
+                <text><![CDATA[Selected Type:]]></text>
+            </staticText>
+            <textField>
+                <reportElement x="400" y="0" width="100" height="30" uuid="b17cbbff-1efe-474e-984f-b589bcfd4f6b"/>
+                <textFieldExpression><![CDATA[$P{MATERIAL_TYPE}]]></textFieldExpression>
+            </textField>
+            <textField>
+                <reportElement x="160" y="0" width="100" height="30" uuid="dc86d0cc-8cb6-4c0d-b1d0-8fe616d54a03"/>
+                <textFieldExpression><![CDATA[$P{QUANTITY}]]></textFieldExpression>
+            </textField>
         </band>
     </pageHeader>
     <columnHeader>
@@ -98,36 +136,54 @@ ORDER BY
                     <reportElement x="-1" y="0" width="72" height="30" uuid="8268c1ea-5dd8-4b0c-b04a-54787b55ffd8">
                         <property name="com.jaspersoft.studio.spreadsheet.connectionID" value="9833dcb8-6d3d-4c1a-90cf-6161b26f8236"/>
                     </reportElement>
+                    <textElement textAlignment="Center">
+                        <font isBold="true"/>
+                    </textElement>
                     <text><![CDATA[material_id]]></text>
                 </staticText>
                 <staticText>
                     <reportElement x="70" y="0" width="100" height="30" uuid="30e65886-d6c7-46bf-ba1d-5d6b8dfa2f60">
                         <property name="com.jaspersoft.studio.spreadsheet.connectionID" value="272108fe-9645-4e45-9857-19c2fffe704a"/>
                     </reportElement>
+                    <textElement textAlignment="Center">
+                        <font isBold="true"/>
+                    </textElement>
                     <text><![CDATA[material_name]]></text>
                 </staticText>
                 <staticText>
                     <reportElement x="169" y="1" width="100" height="30" uuid="866f15fd-d1c7-4d08-97f5-658389744107">
                         <property name="com.jaspersoft.studio.spreadsheet.connectionID" value="98c08a83-e059-4191-ba91-e570244c6553"/>
                     </reportElement>
+                    <textElement textAlignment="Center">
+                        <font isBold="true"/>
+                    </textElement>
                     <text><![CDATA[quantity]]></text>
                 </staticText>
                 <staticText>
                     <reportElement x="270" y="1" width="100" height="30" uuid="15cf57e8-582f-4acb-90fa-f90e2fa00b57">
                         <property name="com.jaspersoft.studio.spreadsheet.connectionID" value="851d3eef-81f3-46cc-908c-408fb0d43b2b"/>
                     </reportElement>
+                    <textElement textAlignment="Center">
+                        <font isBold="true"/>
+                    </textElement>
                     <text><![CDATA[material_type_name]]></text>
                 </staticText>
                 <staticText>
                     <reportElement x="370" y="1" width="90" height="30" uuid="0db9f67d-57ed-4ba8-9725-d1580a8639f3">
                         <property name="com.jaspersoft.studio.spreadsheet.connectionID" value="4d1cd0ce-1f14-475a-ae9d-1830ad36a545"/>
                     </reportElement>
+                    <textElement textAlignment="Center">
+                        <font isBold="true" isItalic="false"/>
+                    </textElement>
                     <text><![CDATA[unit_type]]></text>
                 </staticText>
                 <staticText>
                     <reportElement x="460" y="0" width="90" height="30" uuid="d2a8ee04-2839-47b8-abef-a5447ca248e0">
                         <property name="com.jaspersoft.studio.spreadsheet.connectionID" value="7337a392-f20c-4835-b378-52361a35d0a6"/>
                     </reportElement>
+                    <textElement textAlignment="Center">
+                        <font isBold="true"/>
+                    </textElement>
                     <text><![CDATA[material_created_at]]></text>
                 </staticText>
             </frame>
