@@ -5,7 +5,12 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+
+import java.math.BigDecimal;
+import java.util.HashMap;
+import java.util.Map;
 
 @RestController
 public class ReportController {
@@ -47,9 +52,26 @@ public class ReportController {
     }
 
     @GetMapping("/api/report/productlist")
-    public ResponseEntity<byte[]> generateProductListReport() {
+    public ResponseEntity<byte[]> generateProductListReport(
+            @RequestParam(required = false) BigDecimal maxPrice,
+            @RequestParam(required = false) Integer maxQuantity,
+            @RequestParam(required = false) String categoryName  // <-- add this
+    ) {
         try {
-            byte[] pdfContent = reportService.exportProductReport("productlist_report.jrxml");
+            Map<String, Object> parameters = new HashMap<>();
+
+            if (maxPrice != null) {
+                parameters.put("MaxPrice", maxPrice);
+            }
+            if (maxQuantity != null) {
+                parameters.put("MaxQuantity", maxQuantity);
+            }
+            if (categoryName != null && !categoryName.isEmpty()) {
+                parameters.put("CategoryName", categoryName);
+            }
+
+            byte[] pdfContent = reportService.exportProductReport("productlist_report.jrxml", parameters);
+
             return ResponseEntity.ok()
                     .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=ProductListReport.pdf")
                     .contentType(MediaType.APPLICATION_PDF)
@@ -59,6 +81,8 @@ public class ReportController {
             return ResponseEntity.internalServerError().build();
         }
     }
+
+
 
 
     @GetMapping("/api/report/userdetails")
@@ -90,11 +114,13 @@ public class ReportController {
     }
 
     @GetMapping("/api/report/materiallist")
-    public ResponseEntity<byte[]> generateMaterialListReport() {
+    public ResponseEntity<byte[]> generateMaterialListReport(
+            @RequestParam(required = false) String materialType,
+            @RequestParam(required = false) Integer quantity) {
         try {
-            byte[] pdfContent = reportService.exportMaterialReport("materiallist_report.jrxml");
+            byte[] pdfContent = reportService.exportMaterialReport("materiallist_report.jrxml", materialType, quantity);
             return ResponseEntity.ok()
-                    .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=OrderHistoryReport.pdf")
+                    .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=MaterialListReport.pdf")
                     .contentType(MediaType.APPLICATION_PDF)
                     .body(pdfContent);
         } catch (Exception e) {
@@ -102,5 +128,6 @@ public class ReportController {
             return ResponseEntity.internalServerError().build();
         }
     }
+
 }
 
