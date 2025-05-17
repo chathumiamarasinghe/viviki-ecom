@@ -53,6 +53,9 @@ public class OrderItemController {
 
     }
 
-
+    @GetMapping("/total")
+    public ResponseEntity<Response> getTotalOrderCount() {
+        return ResponseEntity.ok(orderItemService.getTotalOrderCount());
+    }
 
 }
