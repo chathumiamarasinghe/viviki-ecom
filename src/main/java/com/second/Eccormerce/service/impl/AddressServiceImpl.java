@@ -21,12 +21,25 @@ public class AddressServiceImpl implements AddressService {
     @Override
     public Response saveAndUpdateAddress(AddressDto addressDto) {
         User user = userService.getLoginUser();
-        Address address = user.getAddress();
 
-        if (address == null){
+        Address address = null;
+        if (addressDto.getId() != null) {
+            address = addressRepo.findById(addressDto.getId()).orElse(null);
+        }
+
+        if (address != null && !address.getUser().getId().equals(user.getId())) {
+            return Response.builder()
+                    .status(403)
+                    .message("You are not allowed to update this address")
+                    .build();
+        }
+
+
+        if (address == null) {
             address = new Address();
             address.setUser(user);
         }
+
         if (addressDto.getStreet() != null) address.setStreet(addressDto.getStreet());
         if (addressDto.getCity() != null) address.setCity(addressDto.getCity());
         if (addressDto.getState() != null) address.setState(addressDto.getState());
@@ -35,10 +48,11 @@ public class AddressServiceImpl implements AddressService {
 
         addressRepo.save(address);
 
-        String message = (user.getAddress() == null) ? "Address successfully created" : "Address successfully updated";
+        String message = (addressDto.getId() == null) ? "Address successfully created" : "Address successfully updated";
         return Response.builder()
                 .status(200)
                 .message(message)
                 .build();
     }
+
 }
