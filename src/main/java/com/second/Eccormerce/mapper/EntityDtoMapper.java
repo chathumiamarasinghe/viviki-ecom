@@ -64,18 +64,37 @@ public class EntityDtoMapper {
         productDto.setPrice(product.getPrice());
         productDto.setImageUrl(product.getImageUrl());
         productDto.setQuantity(product.getQuantity());
+
+        if (product.getCategory() != null) {
+            CategoryDto categoryDto = new CategoryDto();
+            categoryDto.setId(product.getCategory().getId());
+            categoryDto.setName(product.getCategory().getName());
+            productDto.setCategory(categoryDto);
+        }
         return productDto;
     }
 
-    //Material to DTO Basic
     public MaterialDto mapMaterialToDtoBasic(Material material){
         MaterialDto materialDto = new MaterialDto();
         materialDto.setId(material.getId());
         materialDto.setName(material.getName());
         materialDto.setDescription(material.getDescription());
         materialDto.setQuantity(material.getQuantity());
+
+        // Add this part to map materialType
+        if (material.getMaterialType() != null) {
+            MaterialType materialType = material.getMaterialType();
+            MaterialTypeDto typeDto = new MaterialTypeDto();
+            typeDto.setId(materialType.getId());
+            typeDto.setName(materialType.getName());
+            typeDto.setUnitType(materialType.getUnitType());
+
+            materialDto.setMaterialType(typeDto);
+        }
+
         return materialDto;
     }
+
 
     public UserDto mapUserToDtoPlusAddress(User user){
 
