@@ -87,10 +87,33 @@ JOIN categories c ON p.category_id = c.id;]]>
             <property name="com.jaspersoft.studio.field.tree.path" value="categories"/>
         </field>
     </subDataset>
+    <parameter name="MaxPrice" class="java.math.BigDecimal">
+        <defaultValueExpression><![CDATA[null]]></defaultValueExpression>
+    </parameter>
+    <parameter name="MaxQuantity" class="java.lang.Integer">
+        <defaultValueExpression><![CDATA[null]]></defaultValueExpression>
+    </parameter>
+    <parameter name="CategoryName" class="java.lang.String">
+        <defaultValueExpression><![CDATA[(String)null]]></defaultValueExpression>
+    </parameter>
     <queryString language="SQL">
-        <![CDATA[SELECT p.id, p.name, p.description, p.price, p.quantity, c.name AS category
-FROM products p
-JOIN categories c ON p.category_id = c.id;]]>
+        <![CDATA[SELECT
+    p.id,
+    p.name,
+    p.description,
+    p.price,
+    p.quantity,
+    c.name AS category
+FROM
+    products p
+JOIN
+    categories c ON p.category_id = c.id
+WHERE
+    ( $P{MaxPrice} IS NULL OR p.price <= $P{MaxPrice} )
+    AND
+    ( $P{MaxQuantity} IS NULL OR p.quantity <= $P{MaxQuantity} )
+    AND
+    ( $P{CategoryName} IS NULL OR c.name = $P{CategoryName} )]]>
     </queryString>
     <field name="id" class="java.lang.Long">
         <property name="com.jaspersoft.studio.field.name" value="id"/>
@@ -132,41 +155,74 @@ JOIN categories c ON p.category_id = c.id;]]>
         <band splitType="Stretch"/>
     </background>
     <title>
-        <band height="61" splitType="Stretch">
-            <staticText>
-                <reportElement x="16" y="-10" width="519" height="60" uuid="5288e31c-ec86-4910-b44e-f0da59e1a0df"/>
-                <textElement textAlignment="Center">
-                    <font size="40" isBold="true"/>
-                </textElement>
-                <text><![CDATA[PRODUCT LIST]]></text>
-            </staticText>
-            <image>
-                <reportElement x="25" y="0" width="50" height="50" uuid="35dc2a21-63f0-48d0-bd19-405edba10bfa"/>
-                <imageExpression><![CDATA["static/images/logo.png"]]></imageExpression>
-            </image>
-        </band>
-    </title>
-    <pageHeader>
-        <band height="57" splitType="Stretch">
-            <staticText>
-                <reportElement x="132" y="0" width="287" height="37" forecolor="#666666" uuid="9b5bbf5e-8060-417e-8a5d-5a6485a1fd21"/>
-                <textElement textAlignment="Right">
-                    <font size="18" isBold="true"/>
-                </textElement>
-                <text><![CDATA[Viviki Rubber Products (pvt)Ltd]]></text>
-            </staticText>
+        <band height="104" splitType="Stretch">
+            <frame>
+                <reportElement mode="Opaque" x="-11" y="10" width="582" height="70" backcolor="#F68B1E" uuid="997dcd1d-91a4-45ca-a018-d0d4bb1da405"/>
+                <image>
+                    <reportElement x="10" y="5" width="50" height="50" uuid="35dc2a21-63f0-48d0-bd19-405edba10bfa"/>
+                    <imageExpression><![CDATA["static/images/logo.png"]]></imageExpression>
+                </image>
+                <staticText>
+                    <reportElement x="131" y="30" width="311" height="33" uuid="daa26e85-1746-4efc-a648-4d823b0069c3"/>
+                    <textElement>
+                        <font size="26"/>
+                    </textElement>
+                    <text><![CDATA[PRODUCT LIST REPORT]]></text>
+                </staticText>
+                <staticText>
+                    <reportElement x="82" y="0" width="419" height="37" forecolor="#666666" uuid="9b5bbf5e-8060-417e-8a5d-5a6485a1fd21"/>
+                    <textElement textAlignment="Right">
+                        <font size="21" isBold="true"/>
+                    </textElement>
+                    <text><![CDATA[VIVIKI RUBBER PRODUCTS(PVT) LTD]]></text>
+                </staticText>
+                <staticText>
+                    <reportElement x="320" y="70" width="142" height="21" uuid="6598a267-90bc-4223-a0be-db34abdf075b"/>
+                    <text><![CDATA[Phone : 0752319534]]></text>
+                </staticText>
+            </frame>
             <textField pattern="HH:mm">
-                <reportElement x="30" y="30" width="41" height="21" uuid="c66a55a5-99a5-4970-92bc-f663f9de069e"/>
+                <reportElement x="-10" y="-11" width="41" height="21" uuid="c66a55a5-99a5-4970-92bc-f663f9de069e"/>
                 <textFieldExpression><![CDATA[new java.util.Date()]]></textFieldExpression>
             </textField>
             <textField pattern="MMMMM dd, yyyy">
-                <reportElement x="70" y="30" width="101" height="21" uuid="8aa71575-f52e-43b8-9900-4a378965c9fe"/>
+                <reportElement x="30" y="-11" width="101" height="21" uuid="8aa71575-f52e-43b8-9900-4a378965c9fe"/>
                 <textFieldExpression><![CDATA[new java.util.Date()]]></textFieldExpression>
             </textField>
             <staticText>
-                <reportElement x="390" y="30" width="151" height="21" uuid="6598a267-90bc-4223-a0be-db34abdf075b"/>
-                <text><![CDATA[Phone : 0752319534]]></text>
+                <reportElement x="140" y="80" width="151" height="21" uuid="f1bd87d4-a624-4c89-9501-8072fa55de50"/>
+                <text><![CDATA[Email : rubberstore@gmail.com]]></text>
             </staticText>
+        </band>
+    </title>
+    <pageHeader>
+        <band height="38" splitType="Stretch">
+            <staticText>
+                <reportElement x="10" y="0" width="70" height="21" uuid="4a24ef16-a8e2-481e-9aa6-96c81c1da03c"/>
+                <text><![CDATA[Max Price: $]]></text>
+            </staticText>
+            <staticText>
+                <reportElement x="195" y="0" width="65" height="21" uuid="183e82e8-39d5-4e35-b2fe-29a03fb8c8c2"/>
+                <text><![CDATA[Max Quantity: ]]></text>
+            </staticText>
+            <textField>
+                <reportElement x="80" y="0" width="80" height="21" uuid="660f5eff-0bc6-4238-aaca-6b630678add4"/>
+                <textElement textAlignment="Center"/>
+                <textFieldExpression><![CDATA[$P{MaxPrice}]]></textFieldExpression>
+            </textField>
+            <textField>
+                <reportElement x="250" y="0" width="100" height="21" uuid="82004853-b168-4f95-be0f-70699b4ed536"/>
+                <textElement textAlignment="Center"/>
+                <textFieldExpression><![CDATA[$P{MaxQuantity}]]></textFieldExpression>
+            </textField>
+            <staticText>
+                <reportElement x="366" y="0" width="93" height="21" uuid="8a9ef03f-861d-4057-90cc-26cb71e6a0f3"/>
+                <text><![CDATA[Selected Category:]]></text>
+            </staticText>
+            <textField>
+                <reportElement x="460" y="0" width="100" height="30" uuid="388ba45a-4a81-4d7b-9f43-c5e8a9e216f6"/>
+                <textFieldExpression><![CDATA[$P{CategoryName}]]></textFieldExpression>
+            </textField>
         </band>
     </pageHeader>
     <columnHeader>
