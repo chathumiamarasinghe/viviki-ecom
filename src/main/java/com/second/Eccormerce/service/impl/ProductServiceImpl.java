@@ -151,4 +151,17 @@ public class ProductServiceImpl implements ProductService {
                 .productList(productDtoList)
                 .build();
     }
+
+    @Override
+    public Response getTotalProductCount() {
+        long count = productRepo.count();
+        return Response.builder()
+                .status(200)
+                .message("Total number of products")
+                .totalElement(count)
+                .build();
+    }
+
+
+
 }
